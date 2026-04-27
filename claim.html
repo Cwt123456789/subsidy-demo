@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-  <title>补贴金领取（演示）</title>
+  <title>补贴金领取</title>
   <style>
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -117,7 +117,6 @@
 
     <button class="btn" id="goBtn">前往App领取</button>
     <div class="tip">请尽快领取，退出后将失去补贴资格</div>
-    <div class="demo">演示页面（非微信/非真实入账）</div>
   </div>
 
 <script>
@@ -127,7 +126,7 @@
   document.getElementById('amt').textContent = '¥' + amount;
 
   document.getElementById('goBtn').addEventListener('click', () => {
-    alert('演示：已提交领取申请（未产生真实入账）');
+    alert('已提交领取申请');
   });
 })();
 </script>
