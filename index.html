@@ -1,0 +1,295 @@
+{\rtf1\ansi\ansicpg936\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs28 \cf0 \expnd0\expndtw0\kerning0
+<!doctype html>\
+<html lang="zh-CN">\
+<head>\
+  <meta charset="utf-8" />\
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />\
+  <title>\uc0\u34917 \u36148 \u37329 \u25277 \u22870 \u65288 \u28436 \u31034 \u65289 </title>\
+  <style>\
+    :root\{\
+      --bg1:#ff4b4b;\
+      --bg2:#ff2f6a;\
+      --card:#fff3d6;\
+      --tile:#ffffff;\
+      --tile2:#ffe9b8;\
+      --stroke:#ffd27a;\
+      --hi:#ff3b30;\
+      --hi2:#ffcc00;\
+      --text:#7a2b00;\
+    \}\
+    *\{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif\}\
+    body\{\
+      margin:0;\
+      min-height:100vh;\
+      display:flex;\
+      align-items:center;\
+      justify-content:center;\
+      background: radial-gradient(1200px 600px at 50% 20%, #ff9aa8 0%, var(--bg2) 35%, var(--bg1) 100%);\
+      padding:18px;\
+    \}\
+    .phone\{\
+      width:min(420px, 96vw);\
+      border-radius:26px;\
+      padding:14px;\
+      background: linear-gradient(180deg, #ff6a6a 0%, #ff3f6a 55%, #ff4b4b 100%);\
+      box-shadow:0 18px 60px rgba(0,0,0,.25);\
+      position:relative;\
+      overflow:hidden;\
+    \}\
+    .topbar\{\
+      display:flex;align-items:center;justify-content:space-between;\
+      color:#fff;opacity:.95;font-weight:600;\
+      padding:6px 6px 10px;\
+      font-size:14px;\
+    \}\
+    .title\{\
+      margin:0 auto;\
+      background:rgba(255,255,255,.18);\
+      padding:6px 12px;border-radius:999px;\
+      font-size:13px;\
+      max-width:80%;\
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;\
+    \}\
+    .panel\{\
+      background: linear-gradient(180deg, #ffe7b0 0%, #fff2cf 100%);\
+      border-radius:18px;\
+      padding:12px;\
+      border:2px solid rgba(255,255,255,.55);\
+    \}\
+    .grid\{\
+      display:grid;\
+      grid-template-columns:repeat(3, 1fr);\
+      gap:10px;\
+      padding:6px;\
+      background:rgba(255,255,255,.35);\
+      border-radius:16px;\
+      border:2px solid rgba(255,255,255,.55);\
+    \}\
+    .tile\{\
+      height:92px;\
+      border-radius:14px;\
+      background: linear-gradient(180deg, var(--tile) 0%, var(--tile2) 100%);\
+      border:2px solid var(--stroke);\
+      display:flex;\
+      align-items:center;\
+      justify-content:center;\
+      text-align:center;\
+      padding:10px;\
+      position:relative;\
+      color:var(--text);\
+      font-weight:700;\
+      user-select:none;\
+    \}\
+    .tile small\{display:block;font-weight:600;opacity:.85;margin-top:6px\}\
+    .tag\{\
+      position:absolute;left:10px;top:10px;\
+      background:#ff4b4b;color:#fff;\
+      font-size:11px;font-weight:800;\
+      padding:3px 7px;border-radius:999px;\
+      box-shadow:0 6px 14px rgba(255,75,75,.35);\
+    \}\
+    .centerBtn\{\
+      background: linear-gradient(180deg, #ff3b30 0%, #ff7a00 100%);\
+      border:0;\
+      color:#fff;\
+      font-size:18px;\
+      font-weight:900;\
+      border-radius:14px;\
+      width:100%;\
+      height:100%;\
+      box-shadow:0 10px 22px rgba(255,59,48,.35);\
+      cursor:pointer;\
+    \}\
+    .centerBtn:active\{transform:scale(.99)\}\
+    .highlight\{\
+      border-color: var(--hi2) !important;\
+      box-shadow: 0 0 0 3px rgba(255,204,0,.55), 0 10px 22px rgba(255,59,48,.18);\
+      background: linear-gradient(180deg, #fff 0%, #ffe08a 100%) !important;\
+    \}\
+    .footerNote\{\
+      margin-top:10px;\
+      color:rgba(255,255,255,.92);\
+      font-size:12px;\
+      line-height:1.35;\
+      padding:0 4px;\
+    \}\
+\
+    /* modal */\
+    .mask\{\
+      position:fixed;inset:0;background:rgba(0,0,0,.45);\
+      display:none;align-items:center;justify-content:center;\
+      padding:18px;\
+    \}\
+    .modal\{\
+      width:min(360px, 92vw);\
+      background:#fff;border-radius:18px;\
+      padding:16px 16px 14px;\
+      box-shadow:0 18px 60px rgba(0,0,0,.35);\
+    \}\
+    .modal h3\{margin:4px 0 8px;font-size:18px\}\
+    .modal p\{margin:0 0 12px;color:#333;opacity:.9;font-size:14px;line-height:1.45\}\
+    .modal .row\{display:flex;gap:10px\}\
+    .btn\{\
+      flex:1;border:0;border-radius:12px;\
+      padding:12px 10px;font-weight:800;font-size:15px;cursor:pointer;\
+    \}\
+    .btn.gray\{background:#f2f3f5;color:#333\}\
+    .btn.red\{background:#ff3b30;color:#fff\}\
+    .demoBadge\{\
+      position:absolute;right:12px;top:12px;\
+      background:rgba(0,0,0,.18);\
+      color:#fff;font-size:11px;font-weight:800;\
+      padding:4px 8px;border-radius:999px;\
+      border:1px solid rgba(255,255,255,.25);\
+    \}\
+  </style>\
+</head>\
+<body>\
+  <div class="phone">\
+    <div class="demoBadge">\uc0\u28436 \u31034  Demo</div>\
+    <div class="topbar">\
+      <div style="width:40px">\'8b</div>\
+      <div class="title">\uc0\u28014 \u22840 \u29983 eason\u34917 \u36148 iPhone</div>\
+      <div style="width:40px;text-align:right">\uc0\u8943 </div>\
+    </div>\
+\
+    <div class="panel">\
+      <div class="grid" id="grid">\
+        <!-- 0 -->\
+        <div class="tile" data-i="0"><span class="tag">\uc0\u29305 \u31561 \u22870 </span><div>\'a599<br><small>\u34917 \u36148 \u37329 </small></div></div>\
+        <!-- 1 -->\
+        <div class="tile" data-i="1"><span class="tag">\uc0\u29305 \u31561 \u22870 </span><div>\'a599<br><small>\u34917 \u36148 \u37329 </small></div></div>\
+        <!-- 2 -->\
+        <div class="tile" data-i="2"><div>\uc0\u31070 \u31192 \u31036 \u21697 <br><small>\'a566</small></div></div>\
+        <!-- 3 -->\
+        <div class="tile" data-i="3"><div>\uc0\u20248 \u24800 \u21048 <br><small>\'a5288</small></div></div>\
+        <!-- 4 center -->\
+        <div class="tile" data-i="4" style="padding:0;border-color:#ffb84d">\
+          <button class="centerBtn" id="startBtn">\uc0\u25277 \u22870 </button>\
+        </div>\
+        <!-- 5 -->\
+        <div class="tile" data-i="5"><span class="tag">\uc0\u29305 \u31561 \u22870 </span><div>\'a599<br><small>\u34917 \u36148 \u37329 </small></div></div>\
+        <!-- 6 -->\
+        <div class="tile" data-i="6"><div>\uc0\u26080 \u38376 \u27099 \u21048 <br><small>\'a55</small></div></div>\
+        <!-- 7 -->\
+        <div class="tile" data-i="7"><div>\uc0\u31070 \u31192 \u31036 \u21697 <br><small>\'a5188</small></div></div>\
+        <!-- 8 -->\
+        <div class="tile" data-i="8"><div>\uc0\u20840 \u24179 \u21488 \u21048 \u21253 <br><small>\'a588</small></div></div>\
+      </div>\
+    </div>\
+\
+    <div class="footerNote">\
+      \uc0\u35828 \u26126 \u65306 \u26412 \u39029 \u38754 \u20165 \u29992 \u20110 \u24405 \u23631 \u28436 \u31034 \u25277 \u22870 \u21160 \u25928 \u65292 \u19981 \u23545 \u25509 \u24494 \u20449 \u25903 \u20184 /\u20837 \u36134 \u65292 \u19981 \u29983 \u25104 \u20219 \u20309 \u30495 \u23454 \u36164 \u37329 \u20973 \u35777 \u12290 \
+    </div>\
+  </div>\
+\
+  <!-- modal -->\
+  <div class="mask" id="mask">\
+    <div class="modal">\
+      <h3 id="mTitle">\uc0\u24685 \u21916 \u20320 \u65292 \u20013 \u22870 \u20102 </h3>\
+      <p id="mText">\uc0\u20320 \u33719 \u24471 \u65306 <b>99\u20803 \u34917 \u36148 \u37329 </b>\u65288 \u28436 \u31034 \u65289 </p>\
+      <div class="row">\
+        <button class="btn gray" id="closeBtn">\uc0\u20851 \u38381 </button>\
+        <button class="btn red" id="claimBtn">\uc0\u39046 \u21462 </button>\
+      </div>\
+    </div>\
+  </div>\
+\
+<script>\
+(() => \{\
+  const tiles = [...document.querySelectorAll('.tile')].filter(t => t.dataset.i !== "4");\
+  const startBtn = document.getElementById('startBtn');\
+  const mask = document.getElementById('mask');\
+  const closeBtn = document.getElementById('closeBtn');\
+  const claimBtn = document.getElementById('claimBtn');\
+\
+  // \uc0\u39034 \u26102 \u38024 \u36335 \u24452 \u65288 \u32469 \u24320 \u20013 \u24515 \u65289 \
+  const order = [0,1,2,5,8,7,6,3]; // 8\uc0\u26684 \
+  let idx = 0;\
+  let timer = null;\
+  let running = true;\
+  let spinning = false;\
+\
+  function setHighlight(orderIndex)\{\
+    tiles.forEach(t => t.classList.remove('highlight'));\
+    const i = order[orderIndex % order.length];\
+    const el = document.querySelector(`.tile[data-i="$\{i\}"]`);\
+    if(el) el.classList.add('highlight');\
+  \}\
+\
+  // \uc0\u40664 \u35748 \u25345 \u32493 \u39640 \u20142 \u36339 \u21160 \
+  function startIdle()\{\
+    if(timer) clearInterval(timer);\
+    running = true;\
+    timer = setInterval(() => \{\
+      if(spinning) return;\
+      idx = (idx + 1) % order.length;\
+      setHighlight(idx);\
+    \}, 180);\
+  \}\
+\
+  // \uc0\u28857 \u20987 \u25277 \u22870 \u65306 \u21152 \u36895 ->\u20943 \u36895 ->\u20572 \u22312 \u25351 \u23450 \u26684 \u65288 99\u20803 \u65289 \
+  function spinTo(targetDataI)\{\
+    if(spinning) return;\
+    spinning = true;\
+\
+    // \uc0\u25214 \u21040 \u30446 \u26631 \u22312 order\u20013 \u30340 \u20301 \u32622 \
+    const targetIndex = order.indexOf(targetDataI);\
+    if(targetIndex < 0) \{ spinning = false; return; \}\
+\
+    let steps = 0;\
+    const minRounds = 4; // \uc0\u33267 \u23569 \u36716 4\u22280 \
+    const totalSteps = minRounds * order.length + ((targetIndex - idx + order.length) % order.length);\
+\
+    let delay = 60;\
+    function tick()\{\
+      idx = (idx + 1) % order.length;\
+      setHighlight(idx);\
+      steps++;\
+\
+      // \uc0\u36880 \u27493 \u20943 \u36895 \
+      const progress = steps / totalSteps;\
+      if(progress > 0.65) delay = 120;\
+      if(progress > 0.80) delay = 180;\
+      if(progress > 0.92) delay = 260;\
+\
+      if(steps >= totalSteps)\{\
+        spinning = false;\
+        // \uc0\u24377 \u31383 \
+        setTimeout(() => \{ mask.style.display = 'flex'; \}, 250);\
+        return;\
+      \}\
+      setTimeout(tick, delay);\
+    \}\
+    tick();\
+  \}\
+\
+  startBtn.addEventListener('click', () => \{\
+    // \uc0\u22266 \u23450 \u21629 \u20013 \u19968 \u20010 \'9399\u20803 \u34917 \u36148 \u37329 \'94\u26684 \u23376 \u65306 \u36825 \u37324 \u20572 \u22312  data-i=1\
+    spinTo(1);\
+  \});\
+\
+  closeBtn.addEventListener('click', () => \{\
+    mask.style.display = 'none';\
+  \});\
+\
+  claimBtn.addEventListener('click', () => \{\
+    // \uc0\u21512 \u35268 \u65306 \u36339 \u36716 \u21040 \'93\u28436 \u31034 \u39046 \u21462 \u35828 \u26126 \u39029 \'94\u65292 \u19981 \u20223 \u20882 \u24494 \u20449 \
+    location.href = "./claim.html";\
+  \});\
+\
+  // init\
+  setHighlight(idx);\
+  startIdle();\
+\})();\
+</script>\
+</body>\
+</html>}
