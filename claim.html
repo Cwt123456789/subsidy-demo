@@ -3,28 +3,133 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-  <title>领取补贴金（演示）</title>
+  <title>补贴金领取（演示）</title>
   <style>
-    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
       font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-      background:#f6f7f9;padding:18px}
-    .card{width:min(420px,96vw);background:#fff;border-radius:16px;padding:16px;
-      box-shadow:0 12px 40px rgba(0,0,0,.08)}
-    h2{margin:0 0 10px;font-size:18px}
-    p{margin:0 0 12px;color:#333;line-height:1.5;font-size:14px}
-    .btn{display:block;width:100%;border:0;border-radius:12px;padding:12px 10px;
-      font-weight:800;font-size:15px;background:#07c160;color:#fff;cursor:pointer}
-    .btn2{margin-top:10px;background:#f2f3f5;color:#333}
-    .tip{font-size:12px;color:#666}
+      background:#f6f7f9;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .page{
+      width:min(430px, 100vw);
+      height:min(860px, 100vh);
+      aspect-ratio: 9 / 16;
+      background:#fff;
+      border-radius:18px;
+      box-shadow:0 18px 60px rgba(0,0,0,.12);
+      overflow:hidden;
+      position:relative;
+    }
+    .header{
+      height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-bottom:1px solid #eef0f3;
+      font-weight:900;
+      color:#111;
+      letter-spacing:1px;
+    }
+    .content{
+      padding:26px 18px 18px;
+      text-align:center;
+    }
+    .check{
+      width:64px;height:64px;border-radius:50%;
+      background:#07c160;
+      margin:10px auto 14px;
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-size:34px;font-weight:1000;
+      box-shadow:0 14px 30px rgba(7,193,96,.22);
+    }
+    .line1{
+      margin-top:6px;
+      font-size:18px;
+      font-weight:900;
+      color:#111;
+    }
+    .amount{
+      margin-top:10px;
+      font-size:44px;
+      font-weight:1000;
+      color:#111;
+      letter-spacing:1px;
+    }
+    .metaRow{
+      margin-top:18px;
+      display:flex;
+      justify-content:space-between;
+      color:#8a8f98;
+      font-size:13px;
+      padding:0 6px;
+    }
+    .btn{
+      position:absolute;
+      left:18px; right:18px;
+      bottom:86px;
+      border:0;
+      border-radius:12px;
+      padding:14px 14px;
+      background:#07c160;
+      color:#fff;
+      font-weight:1000;
+      font-size:16px;
+      cursor:pointer;
+      box-shadow:0 14px 30px rgba(7,193,96,.22);
+    }
+    .tip{
+      position:absolute;
+      left:18px; right:18px;
+      bottom:46px;
+      text-align:center;
+      color:#8a8f98;
+      font-size:12px;
+    }
+    .demo{
+      position:absolute;
+      left:0; right:0; bottom:14px;
+      text-align:center;
+      color:#b0b6bf;
+      font-size:11px;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h2>领取补贴金（演示）</h2>
-    <p>你已获得 <b>99 元补贴金</b>（仅录屏演示）。</p>
-    <p class="tip">提示：本页面不对接微信支付，不会产生真实入账通知或零钱明细记录。</p>
-    <button class="btn" onclick="alert('演示：领取成功（未产生真实入账）')">领取（演示）</button>
-    <button class="btn btn2" onclick="location.href='./index.html'">返回抽奖</button>
+  <div class="page">
+    <div class="header">领取补贴金</div>
+
+    <div class="content">
+      <div class="check">✓</div>
+      <div class="line1">你有一笔补贴待领取</div>
+      <div class="amount" id="amt">¥99</div>
+
+      <div class="metaRow">
+        <div>发放时间</div>
+        <div id="timeText">立即到账</div>
+      </div>
+    </div>
+
+    <button class="btn" id="goBtn">前往App领取</button>
+    <div class="tip">请尽快领取，退出后将失去补贴资格</div>
+    <div class="demo">演示页面（非微信/非真实入账）</div>
   </div>
+
+<script>
+(() => {
+  const params = new URLSearchParams(location.search);
+  const amount = params.get('amount') || '99';
+  document.getElementById('amt').textContent = '¥' + amount;
+
+  document.getElementById('goBtn').addEventListener('click', () => {
+    alert('演示：已提交领取申请（未产生真实入账）');
+  });
+})();
+</script>
 </body>
 </html>
