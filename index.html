@@ -156,7 +156,7 @@
       overflow:hidden;
     }
 
-    /* 8个扇形背景（纯背景，不放文字，避免乱码） */
+    /* 8个扇形背景 */
     .sliceBg{
       position:absolute;
       inset:0;
@@ -166,21 +166,24 @@
     .sliceBg:nth-child(odd){ background: rgba(255, 90, 115, .10); }
     .sliceBg:nth-child(even){ background: rgba(255, 210, 122, .18); }
 
-    /* 扇区内容：用“中心角旋转 + 往外平移”定位，文字保持正常横排 */
+    /* 奖品层：不跟着盘面旋转（关键！） */
+    .prizeLayer{
+      position:absolute;
+      inset:0;
+      z-index:4;
+      pointer-events:none;
+    }
+
+    /* 奖品卡片：用 JS 设置 left/top，保证均匀分布 */
     .prize{
       position:absolute;
-      left:50%;
-      top:50%;
-      width:160px;
-      transform-origin: 0 0;
-      /* transform 在行内 style 里设置：rotate(angle) translate(radius) rotate(-angle) */
+      width:150px;
+      transform: translate(-50%, -50%);
       display:flex;
       align-items:center;
       gap:10px;
       color:var(--text);
       font-weight:1000;
-      z-index:4;
-      pointer-events:none;
     }
     .prizeIcon{
       width:44px;height:44px;
@@ -213,7 +216,7 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width:100px;
+      max-width:92px;
     }
     .t2{
       font-size:11px;
@@ -224,7 +227,7 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width:100px;
+      max-width:92px;
     }
 
     /* 中心按钮 */
@@ -373,8 +376,8 @@
         <div class="bulbs" id="bulbs" aria-hidden="true"></div>
         <div class="wheel" aria-hidden="true"></div>
 
+        <!-- 盘面（只负责旋转 + 扇形背景） -->
         <div class="plate" id="plate" aria-label="抽奖转盘">
-          <!-- 8个扇形背景（每个45度） -->
           <div class="sliceBg" style="transform:rotate(0deg)"></div>
           <div class="sliceBg" style="transform:rotate(45deg)"></div>
           <div class="sliceBg" style="transform:rotate(90deg)"></div>
@@ -383,12 +386,14 @@
           <div class="sliceBg" style="transform:rotate(225deg)"></div>
           <div class="sliceBg" style="transform:rotate(270deg)"></div>
           <div class="sliceBg" style="transform:rotate(315deg)"></div>
+        </div>
 
-          <!-- 扇区内容：角度=扇区中心角（22.5 + i*45），半径=92px（可调） -->
-          <!-- 1：1.5元无门槛券（开口红包） -->
-          <div class="prize" style="transform:rotate(22.5deg) translate(92px) rotate(-22.5deg);">
-            <div class="prizeIcon" aria-hidden="true">
-              <!-- 开口红包 SVG -->
+        <!-- 奖品层（不旋转，均匀分布） -->
+        <div class="prizeLayer" id="prizeLayer" aria-hidden="true">
+          <!-- 1 -->
+          <div class="prize" data-i="0">
+            <div class="prizeIcon">
+              <!-- 开口红包 -->
               <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
                 <path d="M12 26c0-4 3-7 7-7h26c4 0 7 3 7 7v22c0 4-3 7-7 7H19c-4 0-7-3-7-7V26z" fill="#ff3b5c"/>
                 <path d="M12 26h40v10H12V26z" fill="#ffd27a"/>
@@ -403,10 +408,10 @@
             </div>
           </div>
 
-          <!-- 2：99元补贴金（关闭红包） -->
-          <div class="prize" style="transform:rotate(67.5deg) translate(92px) rotate(-67.5deg);">
-            <div class="prizeIcon" aria-hidden="true">
-              <!-- 关闭红包 SVG -->
+          <!-- 2 -->
+          <div class="prize" data-i="1">
+            <div class="prizeIcon">
+              <!-- 关闭红包 -->
               <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
                 <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
                 <path d="M10 28h44v8H10v-8z" fill="#ffd27a"/>
@@ -420,9 +425,9 @@
             </div>
           </div>
 
-          <!-- 3：1.99元抢购价值66元的水果（水果真实图） -->
-          <div class="prize" style="transform:rotate(112.5deg) translate(92px) rotate(-112.5deg);">
-            <div class="prizeIcon" aria-hidden="true">
+          <!-- 3 -->
+          <div class="prize" data-i="2">
+            <div class="prizeIcon">
               <img alt="水果" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%B0%B4%E6%9E%9C.webp">
             </div>
             <div class="prizeText">
@@ -431,9 +436,9 @@
             </div>
           </div>
 
-          <!-- 4：88元补贴金（关闭红包） -->
-          <div class="prize" style="transform:rotate(157.5deg) translate(92px) rotate(-157.5deg);">
-            <div class="prizeIcon" aria-hidden="true">
+          <!-- 4 -->
+          <div class="prize" data-i="3">
+            <div class="prizeIcon">
               <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
                 <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
                 <path d="M10 28h44v8H10v-8z" fill="#ffd27a"/>
@@ -447,9 +452,9 @@
             </div>
           </div>
 
-          <!-- 5：1.88元抢购价值66元的鸡蛋（鸡蛋真实图） -->
-          <div class="prize" style="transform:rotate(202.5deg) translate(92px) rotate(-202.5deg);">
-            <div class="prizeIcon" aria-hidden="true">
+          <!-- 5 -->
+          <div class="prize" data-i="4">
+            <div class="prizeIcon">
               <img alt="鸡蛋" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E9%B8%A1%E8%9B%8B.webp">
             </div>
             <div class="prizeText">
@@ -458,9 +463,9 @@
             </div>
           </div>
 
-          <!-- 6：10元无门槛券（开口红包） -->
-          <div class="prize" style="transform:rotate(247.5deg) translate(92px) rotate(-247.5deg);">
-            <div class="prizeIcon" aria-hidden="true">
+          <!-- 6 -->
+          <div class="prize" data-i="5">
+            <div class="prizeIcon">
               <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
                 <path d="M12 26c0-4 3-7 7-7h26c4 0 7 3 7 7v22c0 4-3 7-7 7H19c-4 0-7-3-7-7V26z" fill="#ff3b5c"/>
                 <path d="M12 26h40v10H12V26z" fill="#ffd27a"/>
@@ -475,9 +480,9 @@
             </div>
           </div>
 
-          <!-- 7：66元补贴金（关闭红包） -->
-          <div class="prize" style="transform:rotate(292.5deg) translate(92px) rotate(-292.5deg);">
-            <div class="prizeIcon" aria-hidden="true">
+          <!-- 7 -->
+          <div class="prize" data-i="6">
+            <div class="prizeIcon">
               <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
                 <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
                 <path d="M10 28h44v8H10v-8z" fill="#ffd27a"/>
@@ -491,9 +496,9 @@
             </div>
           </div>
 
-          <!-- 8：1.99元抢购价值66元的抽纸（抽纸真实图） -->
-          <div class="prize" style="transform:rotate(337.5deg) translate(92px) rotate(-337.5deg);">
-            <div class="prizeIcon" aria-hidden="true">
+          <!-- 8 -->
+          <div class="prize" data-i="7">
+            <div class="prizeIcon">
               <img alt="抽纸" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%8A%BD%E7%BA%B8.webp">
             </div>
             <div class="prizeText">
@@ -520,11 +525,11 @@
         <div class="winTitle">恭喜你中奖啦</div>
         <div class="payCard">
           <div class="sub2" id="winLabel">奖品</div>
-          <div class="big" id="winMain">¥<span id="winAmount">99</span></div>
+          <div class="big">¥<span id="winAmount">99</span></div>
           <div class="sub2">点击下方按钮前往领取</div>
         </div>
         <button class="winBtn" id="winBtn">开心收下</button>
-        <div class="winHint">提示：将跳转到领取页（claim.html）</div>
+        <div class="winHint">提示：将跳转到领取页</div>
       </div>
     </div>
   </div>
@@ -537,9 +542,9 @@
   const winBtn = document.getElementById('winBtn');
   const winAmount = document.getElementById('winAmount');
   const winLabel = document.getElementById('winLabel');
-  const winMain = document.getElementById('winMain');
   const bulbs = document.getElementById('bulbs');
   const coinLayer = document.getElementById('coinLayer');
+  const prizeLayer = document.getElementById('prizeLayer');
 
   // 灯泡
   (function buildBulbs(){
@@ -574,7 +579,7 @@
     setTimeout(() => { coinLayer.style.display = 'none'; }, 2600);
   }
 
-  // 8个奖品（顺序必须与扇区一致：从正上方开始顺时针）
+  // 8个奖品（顺序：从正上方开始，顺时针）
   const prizes = [
     { type:'coupon', label:'1.5元无门槛券', amount: 1.5 },
     { type:'cash',   label:'99元补贴金', amount: 99 },
@@ -586,19 +591,52 @@
     { type:'goods',  label:'1.99元抢购抽纸（价值66元）', amount: 1.99 },
   ];
 
+  // 关键：均匀分布奖品位置（极坐标）
+  function layoutPrizes(){
+    const rect = prizeLayer.getBoundingClientRect();
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+
+    // 半径：根据盘面大小自适应（越大越靠外）
+    // 这里取较小边的 0.28，基本能落在扇区中间，不会挤到中心按钮
+    const r = Math.min(rect.width, rect.height) * 0.28;
+
+    const nodes = prizeLayer.querySelectorAll('.prize');
+    nodes.forEach(node => {
+      const i = Number(node.dataset.i || 0);
+
+      // 扇区中心角：-90°（正上方）开始，顺时针每格45°
+      const deg = -90 + i * 45;
+      const rad = deg * Math.PI / 180;
+
+      const x = cx + Math.cos(rad) * r;
+      const y = cy + Math.sin(rad) * r;
+
+      node.style.left = x + 'px';
+      node.style.top  = y + 'px';
+
+      // 让左右两侧的卡片朝向更自然：左半边右对齐
+      // （可选优化，不影响均匀分布）
+      const isLeft = (deg > 90 || deg < -90);
+      node.style.justifyContent = isLeft ? 'flex-end' : 'flex-start';
+      node.style.textAlign = isLeft ? 'right' : 'left';
+      node.style.flexDirection = isLeft ? 'row-reverse' : 'row';
+    });
+  }
+
+  // 初次布局 + 监听尺寸变化
+  layoutPrizes();
+  window.addEventListener('resize', layoutPrizes);
+
   let spinning = false;
   let currentDeg = 0;
 
   function spinTo(index){
-    // 每扇区45度，中心角 = index*45 + 22.5
     const slice = 45;
-    const centerDeg = index * slice + slice/2;
-
-    // 多转几圈
+    const centerDeg = index * slice + slice/2; // 22.5, 67.5...
     const rounds = 5;
     const target = (rounds * 360) - centerDeg;
 
-    // 在当前基础上继续转，避免回弹
     const nextDeg = currentDeg + target + (360 - (currentDeg % 360));
     currentDeg = nextDeg;
 
@@ -607,18 +645,7 @@
 
   function showWin(prize){
     winLabel.textContent = prize.label;
-
-    // 弹窗主显示：现金/券显示金额，商品显示“¥x.xx 抢购”
-    if (prize.type === 'cash' || prize.type === 'coupon') {
-      winMain.innerHTML = `¥<span id="winAmount">${prize.amount}</span>`;
-    } else {
-      winMain.innerHTML = `¥<span id="winAmount">${prize.amount}</span>`;
-    }
-
-    // 更新引用
-    const amtEl = document.getElementById('winAmount');
-    winAmount.textContent = amtEl.textContent;
-
+    winAmount.textContent = String(prize.amount);
     winMask.style.display = 'flex';
   }
 
@@ -640,8 +667,7 @@
   });
 
   winBtn.addEventListener('click', () => {
-    // 仍然沿用你之前的领取页参数：amount
-    const amt = (document.getElementById('winAmount')?.textContent) || '99';
+    const amt = winAmount.textContent || '99';
     location.href = '/subsidy-demo/claim.html?amount=' + encodeURIComponent(amt);
   });
 
