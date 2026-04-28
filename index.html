@@ -10,9 +10,7 @@
   <style>
     :root{
       --red:#ff3b5c;
-      --red2:#ff5a73;
       --gold:#ffd27a;
-      --gold2:#ffb84d;
       --text:#b10f2a;
       --shadow: 0 18px 60px rgba(0,0,0,.18);
       --line: rgba(255, 120, 120, .55);
@@ -167,7 +165,7 @@
     .sliceBg:nth-child(odd){ background: rgba(255, 90, 115, .10); }
     .sliceBg:nth-child(even){ background: rgba(255, 210, 122, .18); }
 
-    /* 8条分割线（从中心到外圈） */
+    /* 8条分割线 */
     .divider{
       position:absolute;
       left:50%;
@@ -180,12 +178,12 @@
       filter: drop-shadow(0 2px 2px rgba(255,255,255,.25));
     }
 
-    /* 奖品：放在各扇区中心角方向，跟着盘面一起旋转 */
+    /* 奖品：由 JS 计算位置（角度+半径），并保持文字正向 */
     .prize{
       position:absolute;
       left:50%;
       top:50%;
-      width:160px;
+      width:168px;
       transform-origin: 0 0;
       display:flex;
       align-items:center;
@@ -194,6 +192,12 @@
       font-weight:1000;
       z-index:5;
       pointer-events:none;
+      /* 让卡片更像“贴在扇区里” */
+      padding:6px 8px;
+      border-radius:14px;
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.55);
+      backdrop-filter: blur(2px);
     }
     .prizeIcon{
       width:44px;height:44px;
@@ -226,7 +230,7 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width:100px;
+      max-width:104px;
     }
     .t2{
       font-size:11px;
@@ -237,7 +241,7 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width:100px;
+      max-width:104px;
     }
 
     /* 中心按钮（不旋转） */
@@ -387,7 +391,7 @@
         <div class="wheel" aria-hidden="true"></div>
 
         <div class="plate" id="plate" aria-label="抽奖转盘">
-          <!-- 8个扇形底色（每个45度） -->
+          <!-- 8个扇形底色 -->
           <div class="sliceBg" style="transform:rotate(0deg)"></div>
           <div class="sliceBg" style="transform:rotate(45deg)"></div>
           <div class="sliceBg" style="transform:rotate(90deg)"></div>
@@ -397,7 +401,7 @@
           <div class="sliceBg" style="transform:rotate(270deg)"></div>
           <div class="sliceBg" style="transform:rotate(315deg)"></div>
 
-          <!-- 8条分割线：0,45,...315 -->
+          <!-- 8条分割线 -->
           <div class="divider" style="transform:translate(-50%,-100%) rotate(0deg)"></div>
           <div class="divider" style="transform:translate(-50%,-100%) rotate(45deg)"></div>
           <div class="divider" style="transform:translate(-50%,-100%) rotate(90deg)"></div>
@@ -407,10 +411,10 @@
           <div class="divider" style="transform:translate(-50%,-100%) rotate(270deg)"></div>
           <div class="divider" style="transform:translate(-50%,-100%) rotate(315deg)"></div>
 
-          <!-- 奖品：中心角=22.5 + i*45，半径=92px（可调） -->
-          <!-- 1.5元无门槛券（开口红包） -->
-          <div class="prize" style="transform:rotate(22.5deg) translate(92px) rotate(-22.5deg);">
+          <!-- 奖品（由 JS 自动设置 transform：rotate(a) translate(r) rotate(-a)） -->
+          <div class="prize" data-i="0">
             <div class="prizeIcon">
+              <!-- 开口红包 -->
               <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
                 <path d="M12 26c0-4 3-7 7-7h26c4 0 7 3 7 7v22c0 4-3 7-7 7H19c-4 0-7-3-7-7V26z" fill="#ff3b5c"/>
                 <path d="M12 26h40v10H12V26z" fill="#ffd27a"/>
@@ -425,9 +429,9 @@
             </div>
           </div>
 
-          <!-- 99元补贴金（关闭红包） -->
-          <div class="prize" style="transform:rotate(67.5deg) translate(92px) rotate(-67.5deg);">
+          <div class="prize" data-i="1">
             <div class="prizeIcon">
+              <!-- 关闭红包 -->
               <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
                 <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
                 <path d="M10 28h44v8H10v-8z" fill="#ffd27a"/>
@@ -441,8 +445,7 @@
             </div>
           </div>
 
-          <!-- 1.99元抢购水果（价值66元） -->
-          <div class="prize" style="transform:rotate(112.5deg) translate(92px) rotate(-112.5deg);">
+          <div class="prize" data-i="2">
             <div class="prizeIcon">
               <img alt="水果" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%B0%B4%E6%9E%9C.webp">
             </div>
@@ -452,8 +455,7 @@
             </div>
           </div>
 
-          <!-- 88元补贴金 -->
-          <div class="prize" style="transform:rotate(157.5deg) translate(92px) rotate(-157.5deg);">
+          <div class="prize" data-i="3">
             <div class="prizeIcon">
               <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
                 <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
@@ -468,8 +470,7 @@
             </div>
           </div>
 
-          <!-- 1.88元抢购鸡蛋（价值66元） -->
-          <div class="prize" style="transform:rotate(202.5deg) translate(92px) rotate(-202.5deg);">
+          <div class="prize" data-i="4">
             <div class="prizeIcon">
               <img alt="鸡蛋" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E9%B8%A1%E8%9B%8B.webp">
             </div>
@@ -479,8 +480,7 @@
             </div>
           </div>
 
-          <!-- 10元无门槛券 -->
-          <div class="prize" style="transform:rotate(247.5deg) translate(92px) rotate(-247.5deg);">
+          <div class="prize" data-i="5">
             <div class="prizeIcon">
               <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
                 <path d="M12 26c0-4 3-7 7-7h26c4 0 7 3 7 7v22c0 4-3 7-7 7H19c-4 0-7-3-7-7V26z" fill="#ff3b5c"/>
@@ -496,8 +496,7 @@
             </div>
           </div>
 
-          <!-- 66元补贴金 -->
-          <div class="prize" style="transform:rotate(292.5deg) translate(92px) rotate(-292.5deg);">
+          <div class="prize" data-i="6">
             <div class="prizeIcon">
               <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
                 <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
@@ -512,8 +511,7 @@
             </div>
           </div>
 
-          <!-- 1.99元抢购抽纸（价值66元） -->
-          <div class="prize" style="transform:rotate(337.5deg) translate(92px) rotate(-337.5deg);">
+          <div class="prize" data-i="7">
             <div class="prizeIcon">
               <img alt="抽纸" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%8A%BD%E7%BA%B8.webp">
             </div>
@@ -524,7 +522,6 @@
           </div>
         </div>
 
-        <!-- 中心按钮不旋转 -->
         <div class="center" id="startBtn" role="button" aria-label="开始抽奖">
           <div class="centerBtn">
             <div class="big">抽奖</div>
@@ -607,6 +604,49 @@
     { type:'goods',  label:'1.99元抢购抽纸（价值66元）', amount: 1.99 },
   ];
 
+  // 关键：根据盘面尺寸自动计算“合适半径”，并均匀放入扇区中心
+  function layoutPrizes(){
+    const rect = plate.getBoundingClientRect();
+    const size = Math.min(rect.width, rect.height);
+
+    // 盘面半径（plate 是圆）
+    const R = size / 2;
+
+    // 中心按钮大概占用半径（经验值：中心按钮直径118 + 边框10*2 ≈ 138）
+    // 这里留出安全距离，避免奖品贴到中心按钮
+    const innerSafe = 86; // px
+
+    // 外圈安全距离，避免贴到边框/灯泡
+    const outerSafe = 34; // px
+
+    // 奖品放置半径：在安全区中间
+    const r = Math.max(innerSafe + 10, (R - outerSafe + innerSafe) / 2);
+
+    // 让不同屏幕下更稳：限制范围
+    const rClamped = Math.min(Math.max(r, R * 0.34), R * 0.46);
+
+    const nodes = plate.querySelectorAll('.prize');
+    nodes.forEach(node => {
+      const i = Number(node.dataset.i || 0);
+
+      // 扇区中心角：从正上方开始（-90°），顺时针每格45°
+      const centerDeg = -90 + (i * 45) + 22.5;
+
+      // 让卡片保持正向：rotate(center) translate(r) rotate(-center)
+      node.style.transform = `rotate(${centerDeg}deg) translate(${rClamped}px) rotate(${-centerDeg}deg)`;
+
+      // 左半边自动反向排版，避免文字挤到中心
+      const norm = ((centerDeg % 360) + 360) % 360; // 0..359
+      const isLeft = (norm > 90 && norm < 270);
+      node.style.flexDirection = isLeft ? 'row-reverse' : 'row';
+      node.style.textAlign = isLeft ? 'right' : 'left';
+    });
+  }
+
+  // 初次布局 + 监听尺寸变化
+  layoutPrizes();
+  window.addEventListener('resize', layoutPrizes);
+
   let spinning = false;
   let currentDeg = 0;
 
@@ -615,11 +655,9 @@
     const slice = 45;
     const centerDeg = index * slice + slice/2;
 
-    // 多转几圈
     const rounds = 5;
     const target = (rounds * 360) - centerDeg;
 
-    // 在当前基础上继续转，避免回弹
     const nextDeg = currentDeg + target + (360 - (currentDeg % 360));
     currentDeg = nextDeg;
 
