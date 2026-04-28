@@ -8,7 +8,6 @@
   <style>
     :root{
       --red:#ff3b5c;
-      --red2:#ff5a73;
       --gold:#ffd27a;
       --shadow: 0 18px 60px rgba(0,0,0,.18);
       --line: rgba(255, 120, 120, .45);
@@ -38,6 +37,7 @@
         radial-gradient(900px 600px at 50% 10%, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 55%),
         linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0));
     }
+
     .top{
       padding:26px 18px 10px;
       text-align:center;
@@ -142,8 +142,8 @@
       overflow:hidden;
 
       /* JS will set */
-      --rIcon: 86px;
-      --rText: 132px;
+      --rIcon: 74px;
+      --rText: 118px;
     }
 
     /* 8 slice backgrounds */
@@ -177,13 +177,13 @@
       pointer-events:none;
     }
 
-    /* icon: bigger, less white space */
+    /* icon: smaller */
     .segIcon{
       position:absolute;
       left:0; top:0;
       transform: translate(var(--rIcon)) rotate(calc(-1 * var(--a)));
-      width:64px; height:64px;
-      border-radius:16px;
+      width:48px; height:48px;
+      border-radius:14px;
       background:#fff;
       border:1px solid rgba(0,0,0,.06);
       box-shadow: 0 10px 18px rgba(0,0,0,.10);
@@ -198,19 +198,18 @@
       object-fit:cover;
       display:block;
     }
-    /* make svg fill more */
-    .segIcon svg{ width:46px; height:46px; display:block; }
+    .segIcon svg{ width:34px; height:34px; display:block; }
 
-    /* text: rotated along the slice direction like reference image */
+    /* text: smaller + narrower */
     .segText{
       position:absolute;
       left:0; top:0;
       transform:
         translate(var(--rText))
         rotate(calc(-1 * var(--a)))
-        rotate(90deg); /* make text tangent-ish like the reference */
+        rotate(90deg);
       transform-origin: 0 0;
-      width:140px;
+      width:108px;
       color:var(--txt);
       font-weight:1000;
       line-height:1.05;
@@ -218,14 +217,14 @@
       text-shadow: 0 2px 10px rgba(255,255,255,.55);
     }
     .segText .l1{
-      font-size:14px;
+      font-size:12px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
     .segText .l2{
-      margin-top:4px;
-      font-size:12px;
+      margin-top:3px;
+      font-size:10px;
       font-weight:900;
       opacity:.95;
       white-space:nowrap;
@@ -401,10 +400,8 @@
           <div class="divider" style="transform:translate(-50%,-100%) rotate(315deg)"></div>
 
           <!-- segments: center angles = -90 + 22.5 + i*45 -->
-          <!-- 0 -->
           <div class="seg" style="--a:-67.5deg;">
             <div class="segIcon" aria-hidden="true">
-              <!-- open red packet -->
               <svg viewBox="0 0 64 64" fill="none">
                 <path d="M12 26c0-4 3-7 7-7h26c4 0 7 3 7 7v22c0 4-3 7-7 7H19c-4 0-7-3-7-7V26z" fill="#ff3b5c"/>
                 <path d="M12 26h40v10H12V26z" fill="#ffd27a"/>
@@ -419,10 +416,8 @@
             </div>
           </div>
 
-          <!-- 1 -->
           <div class="seg" style="--a:-22.5deg;">
             <div class="segIcon" aria-hidden="true">
-              <!-- closed red packet -->
               <svg viewBox="0 0 64 64" fill="none">
                 <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
                 <path d="M10 28h44v8H10v-8z" fill="#ffd27a"/>
@@ -436,7 +431,6 @@
             </div>
           </div>
 
-          <!-- 2 -->
           <div class="seg" style="--a:22.5deg;">
             <div class="segIcon">
               <img alt="水果" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%B0%B4%E6%9E%9C.webp">
@@ -447,7 +441,6 @@
             </div>
           </div>
 
-          <!-- 3 -->
           <div class="seg" style="--a:67.5deg;">
             <div class="segIcon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
@@ -463,7 +456,6 @@
             </div>
           </div>
 
-          <!-- 4 -->
           <div class="seg" style="--a:112.5deg;">
             <div class="segIcon">
               <img alt="鸡蛋" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E9%B8%A1%E8%9B%8B.webp">
@@ -474,7 +466,6 @@
             </div>
           </div>
 
-          <!-- 5 -->
           <div class="seg" style="--a:157.5deg;">
             <div class="segIcon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
@@ -491,7 +482,6 @@
             </div>
           </div>
 
-          <!-- 6 -->
           <div class="seg" style="--a:202.5deg;">
             <div class="segIcon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
@@ -507,7 +497,6 @@
             </div>
           </div>
 
-          <!-- 7 -->
           <div class="seg" style="--a:247.5deg;">
             <div class="segIcon">
               <img alt="抽纸" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%8A%BD%E7%BA%B8.webp">
@@ -601,15 +590,15 @@
     { label:'1.99元抢购抽纸（价值66元）', amount: 1.99 },
   ];
 
-  // set radii to mimic reference: icon closer to center, text near outer ring
+  // radii tuned smaller so icon/text stay inside each slice
   function setRadii(){
     const rect = wheelWrap.getBoundingClientRect();
     const size = Math.min(rect.width, rect.height);
     if (!size || size < 50) return false;
 
-    // tuned to keep everything on midline and inside each slice
-    const rIcon = Math.round(size * 0.255); // bigger icon, less blank
-    const rText = Math.round(size * 0.415); // text near outer ring
+    // smaller than previous: keep away from dividers and other slices
+    const rIcon = Math.round(size * 0.235);
+    const rText = Math.round(size * 0.365);
 
     plate.style.setProperty('--rIcon', rIcon + 'px');
     plate.style.setProperty('--rText', rText + 'px');
@@ -633,7 +622,7 @@
 
   function spinTo(index){
     const slice = 45;
-    const centerDeg = index * slice + slice/2; // 22.5, 67.5...
+    const centerDeg = index * slice + slice/2;
     const rounds = 5;
     const target = (rounds * 360) - centerDeg;
 
@@ -653,8 +642,7 @@
     if (spinning) return;
     spinning = true;
 
-    // fixed win: 99
-    const idx = 1;
+    const idx = 1; // fixed win
     // const idx = Math.floor(Math.random() * prizes.length);
 
     spinTo(idx);
