@@ -9,12 +9,11 @@
 
   <style>
     :root{
-      --bg1:#ff3b5c;
-      --bg2:#ff7a6a;
+      --red:#ff3b5c;
+      --red2:#ff5a73;
       --gold:#ffd27a;
       --gold2:#ffb84d;
-      --deep:#b10f2a;
-      --white:#fff;
+      --text:#b10f2a;
       --shadow: 0 18px 60px rgba(0,0,0,.18);
     }
     *{box-sizing:border-box}
@@ -47,7 +46,6 @@
       padding:26px 18px 10px;
       text-align:center;
       color:#fff;
-      position:relative;
     }
     .title{
       font-size:44px;
@@ -61,7 +59,7 @@
       padding:10px 16px;
       border-radius:999px;
       background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
-      color:#ff3b5c;
+      color:var(--red);
       font-weight:1000;
       box-shadow: 0 12px 30px rgba(0,0,0,.12);
       border:1px solid rgba(255,255,255,.55);
@@ -85,6 +83,7 @@
       filter: drop-shadow(0 18px 40px rgba(0,0,0,.22));
     }
 
+    /* 指针 */
     .pointer{
       position:absolute;
       left:50%;
@@ -109,11 +108,11 @@
       box-shadow: 0 10px 18px rgba(0,0,0,.18);
     }
 
+    /* 外圈灯泡 */
     .bulbs{
       position:absolute;
       inset:-10px;
       border-radius:50%;
-      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.18), rgba(255,255,255,0) 60%);
       z-index:1;
       pointer-events:none;
     }
@@ -131,6 +130,7 @@
       50%{transform:scale(1.25); opacity:1}
     }
 
+    /* 外圈红边 */
     .wheel{
       position:absolute;
       inset:0;
@@ -143,6 +143,7 @@
       overflow:hidden;
     }
 
+    /* 可旋转盘面 */
     .plate{
       position:absolute;
       inset:14px;
@@ -152,46 +153,39 @@
       transform: rotate(0deg);
       transition: transform 4.2s cubic-bezier(.12,.78,.12,1);
       z-index:3;
+      overflow:hidden;
     }
 
-    /* 扇区：用 clip-path 做 45° 扇形 */
-    .slice{
+    /* 8个扇形背景（纯背景，不放文字，避免乱码） */
+    .sliceBg{
       position:absolute;
       inset:0;
       clip-path: polygon(50% 50%, 100% 0, 100% 100%);
       transform-origin: 50% 50%;
     }
-    .sliceInner{
+    .sliceBg:nth-child(odd){ background: rgba(255, 90, 115, .10); }
+    .sliceBg:nth-child(even){ background: rgba(255, 210, 122, .18); }
+
+    /* 扇区内容：用“中心角旋转 + 往外平移”定位，文字保持正常横排 */
+    .prize{
       position:absolute;
-      inset:0;
-      transform-origin: 50% 50%;
+      left:50%;
+      top:50%;
+      width:160px;
+      transform-origin: 0 0;
+      /* transform 在行内 style 里设置：rotate(angle) translate(radius) rotate(-angle) */
       display:flex;
       align-items:center;
-      justify-content:flex-start;
-      padding-left:56%;
-      padding-right:6%;
-      gap:8px;
-      color:#c01833;
+      gap:10px;
+      color:var(--text);
       font-weight:1000;
-      font-size:13px;
-      line-height:1.1;
+      z-index:4;
+      pointer-events:none;
     }
-    .slice:nth-child(odd) .sliceInner{ background: rgba(255, 90, 115, .10); }
-    .slice:nth-child(even) .sliceInner{ background: rgba(255, 210, 122, .18); }
-
-    .sliceContent{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      transform: rotate(90deg);
-      transform-origin:left center;
-      white-space:nowrap;
-    }
-
     .prizeIcon{
-      width:34px;height:34px;
-      border-radius:10px;
-      background: rgba(255,255,255,.85);
+      width:44px;height:44px;
+      border-radius:12px;
+      background: rgba(255,255,255,.92);
       border:1px solid rgba(0,0,0,.06);
       display:flex;
       align-items:center;
@@ -209,11 +203,31 @@
     .prizeText{
       display:flex;
       flex-direction:column;
-      gap:2px;
+      gap:3px;
+      min-width:0;
     }
-    .prizeText .t1{ font-size:13px; color:#b10f2a; }
-    .prizeText .t2{ font-size:11px; color:#ff3b5c; opacity:.9; font-weight:900; }
+    .t1{
+      font-size:13px;
+      line-height:1.15;
+      color:#b10f2a;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:100px;
+    }
+    .t2{
+      font-size:11px;
+      line-height:1.15;
+      color:#ff3b5c;
+      opacity:.95;
+      font-weight:900;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:100px;
+    }
 
+    /* 中心按钮 */
     .center{
       position:absolute;
       left:50%; top:50%;
@@ -223,7 +237,7 @@
       background: radial-gradient(circle at 30% 30%, #fff 0%, #ffe7b8 35%, #ffcc66 100%);
       border:10px solid rgba(255,255,255,.65);
       box-shadow: 0 18px 40px rgba(0,0,0,.18);
-      z-index:5;
+      z-index:6;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -236,22 +250,17 @@
       border-radius:50%;
       background: radial-gradient(circle at 30% 30%, #ff6b7f 0%, #ff3b5c 55%, #e81f45 100%);
       display:flex;
+      flex-direction:column;
       align-items:center;
       justify-content:center;
       color:#fff;
       font-weight:1000;
-      font-size:18px;
       letter-spacing:1px;
       box-shadow: inset 0 10px 18px rgba(255,255,255,.18);
+      line-height:1.05;
     }
-    .centerSmall{
-      position:absolute;
-      bottom:10px;
-      font-size:11px;
-      color:rgba(255,255,255,.92);
-      font-weight:900;
-      letter-spacing:.5px;
-    }
+    .centerBtn .big{font-size:18px}
+    .centerBtn .small{font-size:11px; opacity:.95; margin-top:6px; font-weight:900}
 
     .footerTip{
       position:absolute;
@@ -263,6 +272,7 @@
       text-shadow: 0 10px 24px rgba(0,0,0,.18);
     }
 
+    /* 弹窗 */
     .winMask{
       position:absolute; inset:0;
       background:rgba(0,0,0,.35);
@@ -328,6 +338,7 @@
       font-size:12px;
     }
 
+    /* 金币雨 */
     #coinLayer{
       position:absolute; inset:0;
       pointer-events:none;
@@ -363,144 +374,140 @@
         <div class="wheel" aria-hidden="true"></div>
 
         <div class="plate" id="plate" aria-label="抽奖转盘">
-          <!-- 8个扇区：每个45度 -->
-          <div class="slice" style="transform:rotate(0deg)">
-            <div class="sliceInner" style="transform:rotate(0deg)">
-              <div class="sliceContent">
-                <div class="prizeIcon" aria-hidden="true">
-                  <!-- 红包 SVG -->
-                  <svg width="26" height="26" viewBox="0 0 64 64" fill="none">
-                    <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
-                    <path d="M10 28h44v8H10v-8z" fill="#ffd27a"/>
-                    <circle cx="32" cy="32" r="7" fill="#fff"/>
-                    <path d="M32 27c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
-                  </svg>
-                </div>
-                <div class="prizeText">
-                  <div class="t1">99元补贴金</div>
-                  <div class="t2">立即到账</div>
-                </div>
-              </div>
+          <!-- 8个扇形背景（每个45度） -->
+          <div class="sliceBg" style="transform:rotate(0deg)"></div>
+          <div class="sliceBg" style="transform:rotate(45deg)"></div>
+          <div class="sliceBg" style="transform:rotate(90deg)"></div>
+          <div class="sliceBg" style="transform:rotate(135deg)"></div>
+          <div class="sliceBg" style="transform:rotate(180deg)"></div>
+          <div class="sliceBg" style="transform:rotate(225deg)"></div>
+          <div class="sliceBg" style="transform:rotate(270deg)"></div>
+          <div class="sliceBg" style="transform:rotate(315deg)"></div>
+
+          <!-- 扇区内容：角度=扇区中心角（22.5 + i*45），半径=92px（可调） -->
+          <!-- 1：1.5元无门槛券（开口红包） -->
+          <div class="prize" style="transform:rotate(22.5deg) translate(92px) rotate(-22.5deg);">
+            <div class="prizeIcon" aria-hidden="true">
+              <!-- 开口红包 SVG -->
+              <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
+                <path d="M12 26c0-4 3-7 7-7h26c4 0 7 3 7 7v22c0 4-3 7-7 7H19c-4 0-7-3-7-7V26z" fill="#ff3b5c"/>
+                <path d="M12 26h40v10H12V26z" fill="#ffd27a"/>
+                <path d="M20 18c4 6 20 6 24 0" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="32" cy="36" r="7" fill="#fff"/>
+                <path d="M32 31c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
+              </svg>
+            </div>
+            <div class="prizeText">
+              <div class="t1">1.5元无门槛券</div>
+              <div class="t2">立即可用</div>
             </div>
           </div>
 
-          <div class="slice" style="transform:rotate(45deg)">
-            <div class="sliceInner" style="transform:rotate(45deg)">
-              <div class="sliceContent">
-                <div class="prizeIcon" aria-hidden="true">
-                  <!-- 券 SVG -->
-                  <svg width="26" height="26" viewBox="0 0 64 64" fill="none">
-                    <path d="M14 18c0-3 2-5 5-5h26c3 0 5 2 5 5v8a6 6 0 0 0 0 12v8c0 3-2 5-5 5H19c-3 0-5-2-5-5v-8a6 6 0 0 0 0-12v-8z" fill="#ffb84d"/>
-                    <path d="M24 22h16v4H24v-4zm0 10h12v4H24v-4zm0 10h16v4H24v-4z" fill="#fff"/>
-                  </svg>
-                </div>
-                <div class="prizeText">
-                  <div class="t1">1.99元补贴券</div>
-                  <div class="t2">满减可用</div>
-                </div>
-              </div>
+          <!-- 2：99元补贴金（关闭红包） -->
+          <div class="prize" style="transform:rotate(67.5deg) translate(92px) rotate(-67.5deg);">
+            <div class="prizeIcon" aria-hidden="true">
+              <!-- 关闭红包 SVG -->
+              <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
+                <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
+                <path d="M10 28h44v8H10v-8z" fill="#ffd27a"/>
+                <circle cx="32" cy="32" r="7" fill="#fff"/>
+                <path d="M32 27c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
+              </svg>
+            </div>
+            <div class="prizeText">
+              <div class="t1">99元补贴金</div>
+              <div class="t2">可直接领取</div>
             </div>
           </div>
 
-          <div class="slice" style="transform:rotate(90deg)">
-            <div class="sliceInner" style="transform:rotate(90deg)">
-              <div class="sliceContent">
-                <div class="prizeIcon" aria-hidden="true">
-                  <img alt="水果" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%B0%B4%E6%9E%9C.webp">
-                </div>
-                <div class="prizeText">
-                  <div class="t1">水果礼包</div>
-                  <div class="t2">随机发放</div>
-                </div>
-              </div>
+          <!-- 3：1.99元抢购价值66元的水果（水果真实图） -->
+          <div class="prize" style="transform:rotate(112.5deg) translate(92px) rotate(-112.5deg);">
+            <div class="prizeIcon" aria-hidden="true">
+              <img alt="水果" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%B0%B4%E6%9E%9C.webp">
+            </div>
+            <div class="prizeText">
+              <div class="t1">1.99元抢购水果</div>
+              <div class="t2">价值66元</div>
             </div>
           </div>
 
-          <div class="slice" style="transform:rotate(135deg)">
-            <div class="sliceInner" style="transform:rotate(135deg)">
-              <div class="sliceContent">
-                <div class="prizeIcon" aria-hidden="true">
-                  <img alt="抽纸" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%8A%BD%E7%BA%B8.webp">
-                </div>
-                <div class="prizeText">
-                  <div class="t1">抽纸礼包</div>
-                  <div class="t2">包邮到家</div>
-                </div>
-              </div>
+          <!-- 4：88元补贴金（关闭红包） -->
+          <div class="prize" style="transform:rotate(157.5deg) translate(92px) rotate(-157.5deg);">
+            <div class="prizeIcon" aria-hidden="true">
+              <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
+                <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
+                <path d="M10 28h44v8H10v-8z" fill="#ffd27a"/>
+                <circle cx="32" cy="32" r="7" fill="#fff"/>
+                <path d="M32 27c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
+              </svg>
+            </div>
+            <div class="prizeText">
+              <div class="t1">88元补贴金</div>
+              <div class="t2">可直接领取</div>
             </div>
           </div>
 
-          <div class="slice" style="transform:rotate(180deg)">
-            <div class="sliceInner" style="transform:rotate(180deg)">
-              <div class="sliceContent">
-                <div class="prizeIcon" aria-hidden="true">
-                  <svg width="26" height="26" viewBox="0 0 64 64" fill="none">
-                    <path d="M12 22c0-4 3-7 7-7h26c4 0 7 3 7 7v20c0 4-3 7-7 7H19c-4 0-7-3-7-7V22z" fill="#ff6b7f"/>
-                    <path d="M20 30h24v4H20v-4zm0 10h18v4H20v-4z" fill="#fff"/>
-                  </svg>
-                </div>
-                <div class="prizeText">
-                  <div class="t1">10元券</div>
-                  <div class="t2">限时可用</div>
-                </div>
-              </div>
+          <!-- 5：1.88元抢购价值66元的鸡蛋（鸡蛋真实图） -->
+          <div class="prize" style="transform:rotate(202.5deg) translate(92px) rotate(-202.5deg);">
+            <div class="prizeIcon" aria-hidden="true">
+              <img alt="鸡蛋" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E9%B8%A1%E8%9B%8B.webp">
+            </div>
+            <div class="prizeText">
+              <div class="t1">1.88元抢购鸡蛋</div>
+              <div class="t2">价值66元</div>
             </div>
           </div>
 
-          <div class="slice" style="transform:rotate(225deg)">
-            <div class="sliceInner" style="transform:rotate(225deg)">
-              <div class="sliceContent">
-                <div class="prizeIcon" aria-hidden="true">
-                  <img alt="鸡蛋" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E9%B8%A1%E8%9B%8B.webp">
-                </div>
-                <div class="prizeText">
-                  <div class="t1">鸡蛋礼包</div>
-                  <div class="t2">新鲜直达</div>
-                </div>
-              </div>
+          <!-- 6：10元无门槛券（开口红包） -->
+          <div class="prize" style="transform:rotate(247.5deg) translate(92px) rotate(-247.5deg);">
+            <div class="prizeIcon" aria-hidden="true">
+              <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
+                <path d="M12 26c0-4 3-7 7-7h26c4 0 7 3 7 7v22c0 4-3 7-7 7H19c-4 0-7-3-7-7V26z" fill="#ff3b5c"/>
+                <path d="M12 26h40v10H12V26z" fill="#ffd27a"/>
+                <path d="M20 18c4 6 20 6 24 0" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="32" cy="36" r="7" fill="#fff"/>
+                <path d="M32 31c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
+              </svg>
+            </div>
+            <div class="prizeText">
+              <div class="t1">10元无门槛券</div>
+              <div class="t2">立即可用</div>
             </div>
           </div>
 
-          <div class="slice" style="transform:rotate(270deg)">
-            <div class="sliceInner" style="transform:rotate(270deg)">
-              <div class="sliceContent">
-                <div class="prizeIcon" aria-hidden="true">
-                  <svg width="26" height="26" viewBox="0 0 64 64" fill="none">
-                    <path d="M14 18c0-3 2-5 5-5h26c3 0 5 2 5 5v8a6 6 0 0 0 0 12v8c0 3-2 5-5 5H19c-3 0-5-2-5-5v-8a6 6 0 0 0 0-12v-8z" fill="#ffb84d"/>
-                    <path d="M24 22h16v4H24v-4zm0 10h12v4H24v-4zm0 10h16v4H24v-4z" fill="#fff"/>
-                  </svg>
-                </div>
-                <div class="prizeText">
-                  <div class="t1">1.99元补贴券</div>
-                  <div class="t2">满减可用</div>
-                </div>
-              </div>
+          <!-- 7：66元补贴金（关闭红包） -->
+          <div class="prize" style="transform:rotate(292.5deg) translate(92px) rotate(-292.5deg);">
+            <div class="prizeIcon" aria-hidden="true">
+              <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
+                <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
+                <path d="M10 28h44v8H10v-8z" fill="#ffd27a"/>
+                <circle cx="32" cy="32" r="7" fill="#fff"/>
+                <path d="M32 27c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
+              </svg>
+            </div>
+            <div class="prizeText">
+              <div class="t1">66元补贴金</div>
+              <div class="t2">可直接领取</div>
             </div>
           </div>
 
-          <div class="slice" style="transform:rotate(315deg)">
-            <div class="sliceInner" style="transform:rotate(315deg)">
-              <div class="sliceContent">
-                <div class="prizeIcon" aria-hidden="true">
-                  <svg width="26" height="26" viewBox="0 0 64 64" fill="none">
-                    <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
-                    <path d="M10 28h44v8H10v-8z" fill="#ffd27a"/>
-                    <circle cx="32" cy="32" r="7" fill="#fff"/>
-                    <path d="M32 27c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
-                  </svg>
-                </div>
-                <div class="prizeText">
-                  <div class="t1">88元补贴金</div>
-                  <div class="t2">立即到账</div>
-                </div>
-              </div>
+          <!-- 8：1.99元抢购价值66元的抽纸（抽纸真实图） -->
+          <div class="prize" style="transform:rotate(337.5deg) translate(92px) rotate(-337.5deg);">
+            <div class="prizeIcon" aria-hidden="true">
+              <img alt="抽纸" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%8A%BD%E7%BA%B8.webp">
+            </div>
+            <div class="prizeText">
+              <div class="t1">1.99元抢购抽纸</div>
+              <div class="t2">价值66元</div>
             </div>
           </div>
         </div>
 
         <div class="center" id="startBtn" role="button" aria-label="开始抽奖">
-          <div class="centerBtn">抽奖</div>
-          <div class="centerSmall">点击开始</div>
+          <div class="centerBtn">
+            <div class="big">抽奖</div>
+            <div class="small">点击开始</div>
+          </div>
         </div>
       </div>
     </div>
@@ -511,9 +518,9 @@
     <div class="winMask" id="winMask">
       <div class="winModal" role="dialog" aria-modal="true" aria-label="中奖提示">
         <div class="winTitle">恭喜你中奖啦</div>
-        <div class="payCard" aria-label="补贴金发放">
-          <div class="sub2">补贴金金额</div>
-          <div class="big">¥<span id="winAmount">99</span></div>
+        <div class="payCard">
+          <div class="sub2" id="winLabel">奖品</div>
+          <div class="big" id="winMain">¥<span id="winAmount">99</span></div>
           <div class="sub2">点击下方按钮前往领取</div>
         </div>
         <button class="winBtn" id="winBtn">开心收下</button>
@@ -529,10 +536,12 @@
   const winMask = document.getElementById('winMask');
   const winBtn = document.getElementById('winBtn');
   const winAmount = document.getElementById('winAmount');
+  const winLabel = document.getElementById('winLabel');
+  const winMain = document.getElementById('winMain');
   const bulbs = document.getElementById('bulbs');
   const coinLayer = document.getElementById('coinLayer');
 
-  // 外圈灯泡
+  // 灯泡
   (function buildBulbs(){
     const n = 28;
     const r = 50;
@@ -565,35 +574,51 @@
     setTimeout(() => { coinLayer.style.display = 'none'; }, 2600);
   }
 
-  // 8个扇区（与页面扇区顺序一致）
+  // 8个奖品（顺序必须与扇区一致：从正上方开始顺时针）
   const prizes = [
-    { label: '99元补贴金', amount: 99 },
-    { label: '1.99元补贴券', amount: 2 },
-    { label: '水果礼包', amount: 66 },
-    { label: '抽纸礼包', amount: 66 },
-    { label: '10元券', amount: 10 },
-    { label: '鸡蛋礼包', amount: 66 },
-    { label: '1.99元补贴券', amount: 2 },
-    { label: '88元补贴金', amount: 88 },
+    { type:'coupon', label:'1.5元无门槛券', amount: 1.5 },
+    { type:'cash',   label:'99元补贴金', amount: 99 },
+    { type:'goods',  label:'1.99元抢购水果（价值66元）', amount: 1.99 },
+    { type:'cash',   label:'88元补贴金', amount: 88 },
+    { type:'goods',  label:'1.88元抢购鸡蛋（价值66元）', amount: 1.88 },
+    { type:'coupon', label:'10元无门槛券', amount: 10 },
+    { type:'cash',   label:'66元补贴金', amount: 66 },
+    { type:'goods',  label:'1.99元抢购抽纸（价值66元）', amount: 1.99 },
   ];
 
   let spinning = false;
   let currentDeg = 0;
 
   function spinTo(index){
+    // 每扇区45度，中心角 = index*45 + 22.5
     const slice = 45;
     const centerDeg = index * slice + slice/2;
+
+    // 多转几圈
     const rounds = 5;
     const target = (rounds * 360) - centerDeg;
 
+    // 在当前基础上继续转，避免回弹
     const nextDeg = currentDeg + target + (360 - (currentDeg % 360));
     currentDeg = nextDeg;
 
     plate.style.transform = `rotate(${currentDeg}deg)`;
   }
 
-  function showWin(amount){
-    winAmount.textContent = String(amount);
+  function showWin(prize){
+    winLabel.textContent = prize.label;
+
+    // 弹窗主显示：现金/券显示金额，商品显示“¥x.xx 抢购”
+    if (prize.type === 'cash' || prize.type === 'coupon') {
+      winMain.innerHTML = `¥<span id="winAmount">${prize.amount}</span>`;
+    } else {
+      winMain.innerHTML = `¥<span id="winAmount">${prize.amount}</span>`;
+    }
+
+    // 更新引用
+    const amtEl = document.getElementById('winAmount');
+    winAmount.textContent = amtEl.textContent;
+
     winMask.style.display = 'flex';
   }
 
@@ -601,8 +626,8 @@
     if (spinning) return;
     spinning = true;
 
-    // 默认固定中 99（你要随机就把下面一行换成随机）
-    const idx = 0;
+    // 默认固定中“99元补贴金”（index=1），你要随机就改成随机
+    const idx = 1;
     // const idx = Math.floor(Math.random() * prizes.length);
 
     spinTo(idx);
@@ -610,12 +635,13 @@
     setTimeout(() => {
       spinning = false;
       coinRain();
-      showWin(prizes[idx].amount);
+      showWin(prizes[idx]);
     }, 4300);
   });
 
   winBtn.addEventListener('click', () => {
-    const amt = winAmount.textContent || '99';
+    // 仍然沿用你之前的领取页参数：amount
+    const amt = (document.getElementById('winAmount')?.textContent) || '99';
     location.href = '/subsidy-demo/claim.html?amount=' + encodeURIComponent(amt);
   });
 
