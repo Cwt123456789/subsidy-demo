@@ -10,7 +10,9 @@
   <style>
     :root{
       --red:#ff3b5c;
+      --red2:#ff5a73;
       --gold:#ffd27a;
+      --gold2:#ffb84d;
       --text:#b10f2a;
       --shadow: 0 18px 60px rgba(0,0,0,.18);
       --line: rgba(255, 120, 120, .55);
@@ -142,7 +144,7 @@
       overflow:hidden;
     }
 
-    /* 可旋转盘面（包含：扇区底色 + 分割线 + 奖品） */
+    /* 可旋转盘面 */
     .plate{
       position:absolute;
       inset:14px;
@@ -152,10 +154,10 @@
       transform: rotate(0deg);
       transition: transform 4.2s cubic-bezier(.12,.78,.12,1);
       z-index:3;
-      overflow:hidden;
+      overflow:visible; /* 允许奖品稍微超出边界 */
     }
 
-    /* 扇区底色（8个） */
+    /* 扇区底色 */
     .sliceBg{
       position:absolute;
       inset:0;
@@ -165,7 +167,7 @@
     .sliceBg:nth-child(odd){ background: rgba(255, 90, 115, .10); }
     .sliceBg:nth-child(even){ background: rgba(255, 210, 122, .18); }
 
-    /* 8条分割线 */
+    /* 分割线 */
     .divider{
       position:absolute;
       left:50%;
@@ -178,26 +180,19 @@
       filter: drop-shadow(0 2px 2px rgba(255,255,255,.25));
     }
 
-    /* 奖品：由 JS 计算位置（角度+半径），并保持文字正向 */
+    /* 奖品：用 JS 动态计算 left/top（极坐标） */
     .prize{
       position:absolute;
-      left:50%;
-      top:50%;
-      width:100px;
-      transform-origin: 0 0;
+      /* left/top 由 JS 设置 */
+      width:140px;
+      transform: translate(-50%, -50%);
       display:flex;
-      flex-direction:column;
       align-items:center;
-      gap:6px;
+      gap:8px;
       color:var(--text);
       font-weight:1000;
       z-index:5;
       pointer-events:none;
-      padding:6px 8px;
-      border-radius:12px;
-      background: rgba(255,255,255,.65);
-      border: 1px solid rgba(255,255,255,.55);
-      backdrop-filter: blur(2px);
     }
     .prizeIcon{
       width:40px;height:40px;
@@ -222,30 +217,29 @@
       flex-direction:column;
       gap:2px;
       min-width:0;
-      text-align:center;
     }
     .t1{
-      font-size:11px;
-      line-height:1.2;
+      font-size:12px;
+      line-height:1.15;
       color:#b10f2a;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width:90px;
+      max-width:88px;
     }
     .t2{
       font-size:10px;
-      line-height:1.2;
+      line-height:1.15;
       color:#ff3b5c;
       opacity:.95;
       font-weight:900;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width:90px;
+      max-width:88px;
     }
 
-    /* 中心按钮（不旋转） */
+    /* 中心按钮 */
     .center{
       position:absolute;
       left:50%; top:50%;
@@ -389,12 +383,4 @@
       <div class="wheelWrap">
         <div class="pointer" aria-hidden="true"></div>
         <div class="bulbs" id="bulbs" aria-hidden="true"></div>
-        <div class="wheel" aria-hidden="true"></div>
-
-        <div class="plate" id="plate" aria-label="抽奖转盘">
-          <!-- 8个扇形底色 -->
-          <div class="sliceBg" style="transform:rotate(0deg)"></div>
-          <div class="sliceBg" style="transform:rotate(45deg)"></div>
-          <div class="sliceBg" style="transform:rotate(90deg)"></div>
-          <div class="sliceBg" style="transform:rotate(135deg)"></div>
-          <div class="sliceBg" style="transform
+        <div class="wheel" aria-hidden="
