@@ -132,8 +132,7 @@
 
     /* plate */
     .plate{
-      position:absolute;
-      inset:14px;
+      position:absolute; inset:14px;
       border-radius:50%;
       background: radial-gradient(circle at 50% 50%, #fff 0%, #fff7ea 55%, #ffe7c2 100%);
       border:8px solid rgba(255,210,122,.85);
@@ -176,6 +175,8 @@
       transform: rotate(var(--a));
       z-index:6;
       pointer-events:none;
+      /* 新增：默认文字自身旋转0度，可单独覆盖 */
+      --txt-rotate: 0deg;
     }
 
     /* icon: smaller */
@@ -201,14 +202,15 @@
     }
     .segIcon svg{ width:34px; height:34px; display:block; }
 
-    /* text: smaller + narrower */
+    /* 核心修改：加入 --txt-rotate 单独文字旋转变量 */
     .segText{
       position:absolute;
       left:0; top:0;
       transform:
         translate(var(--rText))
         rotate(calc(-1 * var(--a)))
-        rotate(90deg);
+        rotate(90deg)
+        rotate(var(--txt-rotate));  /* 单独控制每个文字自身旋转 */
       transform-origin: 0 0;
       width:108px;
       color:var(--txt);
@@ -400,8 +402,8 @@
           <div class="divider" style="transform:translate(-50%,-100%) rotate(270deg)"></div>
           <div class="divider" style="transform:translate(-50%,-100%) rotate(315deg)"></div>
 
-          <!-- segments: center angles = -90 + 22.5 + i*45 -->
-          <div class="seg" style="--a:-67.5deg;">
+          <!-- segments: 示范：每个都能单独改文字旋转 -->
+          <div class="seg" style="--a:-67.5deg; --txt-rotate: 0deg;">
             <div class="segIcon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
                 <path d="M12 26c0-4 3-7 7-7h26c4 0 7 3 7 7v22c0 4-3 7-7 7H19c-4 0-7-3-7-7V26z" fill="#ff3b5c"/>
@@ -417,7 +419,7 @@
             </div>
           </div>
 
-          <div class="seg" style="--a:-22.5deg;">
+          <div class="seg" style="--a:-22.5deg; --txt-rotate: 10deg;">
             <div class="segIcon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
                 <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
@@ -432,7 +434,7 @@
             </div>
           </div>
 
-          <div class="seg" style="--a:22.5deg;">
+          <div class="seg" style="--a:22.5deg; --txt-rotate: -5deg;">
             <div class="segIcon">
               <img alt="水果" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%B0%B4%E6%9E%9C.webp">
             </div>
@@ -442,7 +444,7 @@
             </div>
           </div>
 
-          <div class="seg" style="--a:67.5deg;">
+          <div class="seg" style="--a:67.5deg; --txt-rotate: 15deg;">
             <div class="segIcon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
                 <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
@@ -457,7 +459,7 @@
             </div>
           </div>
 
-          <div class="seg" style="--a:112.5deg;">
+          <div class="seg" style="--a:112.5deg; --txt-rotate: 0deg;">
             <div class="segIcon">
               <img alt="鸡蛋" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E9%B8%A1%E8%9B%8B.webp">
             </div>
@@ -467,7 +469,7 @@
             </div>
           </div>
 
-          <div class="seg" style="--a:157.5deg;">
+          <div class="seg" style="--a:157.5deg; --txt-rotate: -8deg;">
             <div class="segIcon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
                 <path d="M12 26c0-4 3-7 7-7h26c4 0 7 3 7 7v22c0 4-3 7-7 7H19c-4 0-7-3-7-7V26z" fill="#ff3b5c"/>
@@ -483,7 +485,7 @@
             </div>
           </div>
 
-          <div class="seg" style="--a:202.5deg;">
+          <div class="seg" style="--a:202.5deg; --txt-rotate: 5deg;">
             <div class="segIcon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
                 <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
@@ -498,7 +500,7 @@
             </div>
           </div>
 
-          <div class="seg" style="--a:247.5deg;">
+          <div class="seg" style="--a:247.5deg; --txt-rotate: 12deg;">
             <div class="segIcon">
               <img alt="抽纸" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%8A%BD%E7%BA%B8.webp">
             </div>
@@ -533,7 +535,6 @@
         <div class="winHint">提示：将跳转到领取页</div>
       </div>
     </div>
-  </div>
 
 <script>
 (() => {
