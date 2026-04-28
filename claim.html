@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
   <title>补贴金领取</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='50' font-size='50'>🎁</text></svg>">
   <style>
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -100,7 +101,6 @@
       font-size:11px;
     }
 
-    /* 站内“到账提醒”弹层 */
     .toastMask{
       position:absolute; inset:0;
       background:rgba(0,0,0,.25);
@@ -179,9 +179,7 @@
 
     <button class="btn" id="goBtn">前往App领取</button>
     <div class="tip">请尽快领取，退出后将失去补贴资格</div>
-    <div class="demo"></div>
 
-    <!-- 站内到账提醒 -->
     <div class="toastMask" id="toastMask">
       <div class="toast" role="dialog" aria-modal="true" aria-label="到账提醒">
         <div class="toastTop">
