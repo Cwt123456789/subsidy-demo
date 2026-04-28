@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-  <title>补贴金领取（演示）</title>
+  <title>补贴金领取</title>
   <style>
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -83,6 +83,7 @@
       cursor:pointer;
       box-shadow:0 14px 30px rgba(7,193,96,.22);
     }
+    .btn:active{transform:scale(.99)}
     .tip{
       position:absolute;
       left:18px; right:18px;
@@ -99,7 +100,7 @@
       font-size:11px;
     }
 
-    /* 5) 合规替代：站内“到账提醒”弹层（不仿微信） */
+    /* 站内“到账提醒”弹层 */
     .toastMask{
       position:absolute; inset:0;
       background:rgba(0,0,0,.25);
@@ -129,6 +130,7 @@
       color:#07c160;
       font-weight:1000;
       border:1px solid rgba(7,193,96,.25);
+      flex:0 0 auto;
     }
     .toastTitle{
       font-weight:1000;
@@ -146,6 +148,7 @@
       color:#111;
       font-weight:900;
       font-size:14px;
+      line-height:1.35;
     }
     .toastBody b{color:#07c160}
     .toastBtn{
@@ -156,6 +159,7 @@
       font-weight:1000;
       cursor:pointer;
     }
+    .toastBtn:active{background:#e9eaee}
   </style>
 </head>
 <body>
@@ -175,11 +179,11 @@
 
     <button class="btn" id="goBtn">前往App领取</button>
     <div class="tip">请尽快领取，退出后将失去补贴资格</div>
-    <div class="demo">演示页面（非支付平台通知/非真实入账）</div>
+    <div class="demo"></div>
 
     <!-- 站内到账提醒 -->
     <div class="toastMask" id="toastMask">
-      <div class="toast" role="dialog" aria-modal="true" aria-label="到账提醒（演示）">
+      <div class="toast" role="dialog" aria-modal="true" aria-label="到账提醒">
         <div class="toastTop">
           <div class="badge">✓</div>
           <div>
@@ -188,7 +192,7 @@
           </div>
         </div>
         <div class="toastBody">
-          你的补贴金 <b id="toastAmt">¥99</b> 已发放成功（演示）
+          你的补贴金 <b id="toastAmt">¥99</b> 已发放成功
         </div>
         <button class="toastBtn" id="toastOk">好的</button>
       </div>
@@ -199,6 +203,7 @@
 (() => {
   const params = new URLSearchParams(location.search);
   const amount = params.get('amount') || '99';
+
   document.getElementById('amt').textContent = '¥' + amount;
   document.getElementById('toastAmt').textContent = '¥' + amount;
 
