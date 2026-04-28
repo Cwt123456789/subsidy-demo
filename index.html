@@ -154,8 +154,9 @@
       z-index:3;
       overflow:hidden;
 
-      /* 奖品半径（JS 会写入） */
-      --prizeR: 92px;
+      /* JS 会写入这两个半径：内侧图标、外侧文字 */
+      --rIcon: 78px;
+      --rText: 122px;
     }
 
     /* 扇区底色（8个） */
@@ -181,77 +182,80 @@
       filter: drop-shadow(0 2px 2px rgba(255,255,255,.25));
     }
 
-    /* 奖品：用 CSS 变量 --a(角度) + --prizeR(半径) 定位，保证均匀 */
-    .prize{
+    /* 扇区内容：一个扇区一个 group，里面有 icon + text */
+    .seg{
       position:absolute;
       left:50%;
       top:50%;
-      width:168px;
+      width:0;
+      height:0;
       transform-origin: 0 0;
-      transform: rotate(var(--a)) translate(var(--prizeR)) rotate(calc(-1 * var(--a)));
-      display:flex;
-      align-items:center;
-      gap:10px;
-      color:var(--text);
-      font-weight:1000;
-      z-index:5;
+      z-index:6;
       pointer-events:none;
-
-      padding:6px 8px;
-      border-radius:14px;
-      background: rgba(255,255,255,.55);
-      border: 1px solid rgba(255,255,255,.55);
-      backdrop-filter: blur(2px);
+      /* 角度由 --a 控制 */
+      transform: rotate(var(--a));
     }
 
-    .prize.left{
-      flex-direction: row-reverse;
-      text-align:right;
-    }
-
-    .prizeIcon{
-      width:44px;height:44px;
-      border-radius:12px;
+    /* 内侧图标（商品图/红包） */
+    .segIcon{
+      position:absolute;
+      left:0;
+      top:0;
+      transform: translate(var(--rIcon)) rotate(calc(-1 * var(--a)));
+      width:54px;
+      height:54px;
+      border-radius:16px;
       background: rgba(255,255,255,.92);
       border:1px solid rgba(0,0,0,.06);
+      box-shadow: 0 10px 18px rgba(0,0,0,.10);
       display:flex;
       align-items:center;
       justify-content:center;
       overflow:hidden;
-      flex:0 0 auto;
-      box-shadow: 0 10px 18px rgba(0,0,0,.08);
     }
-    .prizeIcon img{
+    .segIcon img{
       width:100%;
       height:100%;
       object-fit:cover;
       display:block;
     }
-    .prizeText{
-      display:flex;
-      flex-direction:column;
-      gap:3px;
-      min-width:0;
+
+    /* 外侧文字：两行，靠外圈 */
+    .segText{
+      position:absolute;
+      left:0;
+      top:0;
+      transform: translate(var(--rText)) rotate(calc(-1 * var(--a)));
+      width:120px;
+      color:var(--text);
+      font-weight:1000;
+      line-height:1.1;
+      text-shadow: 0 2px 10px rgba(255,255,255,.55);
     }
-    .t1{
+    .segText .l1{
       font-size:13px;
-      line-height:1.15;
-      color:#b10f2a;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width:104px;
     }
-    .t2{
+    .segText .l2{
+      margin-top:3px;
       font-size:11px;
-      line-height:1.15;
       color:#ff3b5c;
-      opacity:.95;
       font-weight:900;
+      opacity:.95;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width:104px;
+    }
+
+    /* 左半边文字向左对齐更自然（避免靠中心挤） */
+    .seg.left .segText{
+      text-align:right;
+      transform: translate(var(--rText)) rotate(calc(-1 * var(--a))) translateX(-120px);
+    }
+    .seg.left .segIcon{
+      transform: translate(var(--rIcon)) rotate(calc(-1 * var(--a))) translateX(-54px);
     }
 
     /* 中心按钮（不旋转） */
@@ -421,10 +425,12 @@
           <div class="divider" style="transform:translate(-50%,-100%) rotate(270deg)"></div>
           <div class="divider" style="transform:translate(-50%,-100%) rotate(315deg)"></div>
 
-          <!-- 奖品：中心角 = -90 + 22.5 + i*45 -->
-          <div class="prize" data-i="0" style="--a:-67.5deg;">
-            <div class="prizeIcon">
-              <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
+          <!-- 8个扇区内容：角度=中心角（-67.5,-22.5,22.5,...） -->
+          <!-- 1：1.5元无门槛券（开口红包） -->
+          <div class="seg" data-i="0" style="--a:-67.5deg;">
+            <div class="segIcon" aria-hidden="true">
+              <!-- 开口红包 -->
+              <svg width="34" height="34" viewBox="0 0 64 64" fill="none">
                 <path d="M12 26c0-4 3-7 7-7h26c4 0 7 3 7 7v22c0 4-3 7-7 7H19c-4 0-7-3-7-7V26z" fill="#ff3b5c"/>
                 <path d="M12 26h40v10H12V26z" fill="#ffd27a"/>
                 <path d="M20 18c4 6 20 6 24 0" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
@@ -432,65 +438,71 @@
                 <path d="M32 31c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
               </svg>
             </div>
-            <div class="prizeText">
-              <div class="t1">1.5元无门槛券</div>
-              <div class="t2">立即可用</div>
+            <div class="segText">
+              <div class="l1">1.5元无门槛券</div>
+              <div class="l2">立即可用</div>
             </div>
           </div>
 
-          <div class="prize" data-i="1" style="--a:-22.5deg;">
-            <div class="prizeIcon">
-              <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
+          <!-- 2：99元补贴金（闭口红包） -->
+          <div class="seg" data-i="1" style="--a:-22.5deg;">
+            <div class="segIcon" aria-hidden="true">
+              <!-- 闭口红包 -->
+              <svg width="34" height="34" viewBox="0 0 64 64" fill="none">
                 <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
                 <path d="M10 28h44v8H10v-8z" fill="#ffd27a"/>
                 <circle cx="32" cy="32" r="7" fill="#fff"/>
                 <path d="M32 27c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
               </svg>
             </div>
-            <div class="prizeText">
-              <div class="t1">99元补贴金</div>
-              <div class="t2">可直接领取</div>
+            <div class="segText">
+              <div class="l1">99元补贴金</div>
+              <div class="l2">可直接领取</div>
             </div>
           </div>
 
-          <div class="prize left" data-i="2" style="--a:22.5deg;">
-            <div class="prizeIcon">
+          <!-- 3：水果（左半边） -->
+          <div class="seg left" data-i="2" style="--a:22.5deg;">
+            <div class="segIcon">
               <img alt="水果" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%B0%B4%E6%9E%9C.webp">
             </div>
-            <div class="prizeText">
-              <div class="t1">1.99元抢购水果</div>
-              <div class="t2">价值66元</div>
+            <div class="segText">
+              <div class="l1">1.99元抢购水果</div>
+              <div class="l2">价值66元</div>
             </div>
           </div>
 
-          <div class="prize left" data-i="3" style="--a:67.5deg;">
-            <div class="prizeIcon">
-              <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
+          <!-- 4：88元补贴金（左半边） -->
+          <div class="seg left" data-i="3" style="--a:67.5deg;">
+            <div class="segIcon" aria-hidden="true">
+              <svg width="34" height="34" viewBox="0 0 64 64" fill="none">
                 <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
                 <path d="M10 28h44v8H10v-8z" fill="#ffd27a"/>
                 <circle cx="32" cy="32" r="7" fill="#fff"/>
                 <path d="M32 27c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
               </svg>
             </div>
-            <div class="prizeText">
-              <div class="t1">88元补贴金</div>
-              <div class="t2">可直接领取</div>
+            <div class="segText">
+              <div class="l1">88元补贴金</div>
+              <div class="l2">可直接领取</div>
             </div>
           </div>
 
-          <div class="prize left" data-i="4" style="--a:112.5deg;">
-            <div class="prizeIcon">
+          <!-- 5：鸡蛋（左半边） -->
+          <div class="seg left" data-i="4" style="--a:112.5deg;">
+            <div class="segIcon">
               <img alt="鸡蛋" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E9%B8%A1%E8%9B%8B.webp">
             </div>
-            <div class="prizeText">
-              <div class="t1">1.88元抢购鸡蛋</div>
-              <div class="t2">价值66元</div>
+            <div class="segText">
+              <div class="l1">1.88元抢购鸡蛋</div>
+              <div class="l2">价值66元</div>
             </div>
           </div>
 
-          <div class="prize left" data-i="5" style="--a:157.5deg;">
-            <div class="prizeIcon">
-              <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
+          <!-- 6：10元无门槛券（左半边，开口红包） -->
+          <div class="seg left" data-i="5" style="--a:157.5deg;">
+            <div class="segIcon" aria-hidden="true">
+              <svg width="34" height="34" viewBox="0 0 64 64" fill="none">
                 <path d="M12 26c0-4 3-7 7-7h26c4 0 7 3 7 7v22c0 4-3 7-7 7H19c-4 0-7-3-7-7V26z" fill="#ff3b5c"/>
                 <path d="M12 26h40v10H12V26z" fill="#ffd27a"/>
                 <path d="M20 18c4 6 20 6 24 0" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
@@ -498,34 +510,36 @@
                 <path d="M32 31c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
               </svg>
             </div>
-            <div class="prizeText">
-              <div class="t1">10元无门槛券</div>
-              <div class="t2">立即可用</div>
+            <div class="segText">
+              <div class="l1">10元无门槛券</div>
+              <div class="l2">立即可用</div>
             </div>
           </div>
 
-          <div class="prize" data-i="6" style="--a:202.5deg;">
-            <div class="prizeIcon">
-              <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
+          <!-- 7：66元补贴金（右半边） -->
+          <div class="seg" data-i="6" style="--a:202.5deg;">
+            <div class="segIcon" aria-hidden="true">
+              <svg width="34" height="34" viewBox="0 0 64 64" fill="none">
                 <path d="M10 22c0-4 3-7 7-7h30c4 0 7 3 7 7v28c0 4-3 7-7 7H17c-4 0-7-3-7-7V22z" fill="#ff3b5c"/>
                 <path d="M10 28h44v8H10v-8z" fill="#ffd27a"/>
                 <circle cx="32" cy="32" r="7" fill="#fff"/>
                 <path d="M32 27c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
               </svg>
             </div>
-            <div class="prizeText">
-              <div class="t1">66元补贴金</div>
-              <div class="t2">可直接领取</div>
+            <div class="segText">
+              <div class="l1">66元补贴金</div>
+              <div class="l2">可直接领取</div>
             </div>
           </div>
 
-          <div class="prize" data-i="7" style="--a:247.5deg;">
-            <div class="prizeIcon">
+          <!-- 8：抽纸（右半边） -->
+          <div class="seg" data-i="7" style="--a:247.5deg;">
+            <div class="segIcon">
               <img alt="抽纸" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%8A%BD%E7%BA%B8.webp">
             </div>
-            <div class="prizeText">
-              <div class="t1">1.99元抢购抽纸</div>
-              <div class="t2">价值66元</div>
+            <div class="segText">
+              <div class="l1">1.99元抢购抽纸</div>
+              <div class="l2">价值66元</div>
             </div>
           </div>
         </div>
@@ -538,6 +552,7 @@
         </div>
       </div>
     </div>
+
 
     <div id="coinLayer"></div>
 
@@ -611,35 +626,33 @@
     { label:'1.99元抢购抽纸（价值66元）', amount: 1.99 },
   ];
 
-  // 稳定计算奖品半径：基于 wheelWrap 尺寸（更不容易为0）
-  function setPrizeRadius(){
+  // 根据尺寸自动设置：内侧图标半径、外侧文字半径
+  function setRadii(){
     const rect = wheelWrap.getBoundingClientRect();
     const size = Math.min(rect.width, rect.height);
     if (!size || size < 50) return false;
 
-    // plate 实际半径约为：wheelWrap/2 - (外圈边框等)，经验取 0.40~0.44 区间最稳
-    // 这里取 0.40，基本落在扇区中间，不压中心按钮
-    const r = Math.round(size * 0.40);
+    // 经验值：图标在 0.26~0.30，文字在 0.40~0.44 最像你截图
+    const rIcon = Math.round(size * 0.26);
+    const rText = Math.round(size * 0.40);
 
-    plate.style.setProperty('--prizeR', r + 'px');
+    plate.style.setProperty('--rIcon', rIcon + 'px');
+    plate.style.setProperty('--rText', rText + 'px');
     return true;
   }
 
-  // 首屏可能拿到0：用 rAF 重试几次
+  // 首屏可能为0：rAF重试
   function ensureLayout(){
     let tries = 0;
     const tick = () => {
       tries++;
-      const ok = setPrizeRadius();
+      const ok = setRadii();
       if (!ok && tries < 20) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
   }
-
   ensureLayout();
-  window.addEventListener('resize', () => {
-    setPrizeRadius();
-  });
+  window.addEventListener('resize', setRadii);
 
   let spinning = false;
   let currentDeg = 0;
