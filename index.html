@@ -167,7 +167,7 @@
       z-index:4;
     }
 
-    /* segment group */
+    /* segment group: everything on the midline */
     .seg{
       position:absolute;
       left:50%; top:50%;
@@ -178,6 +178,7 @@
       pointer-events:none;
     }
 
+    /* icon: smaller */
     .segIcon{
       position:absolute;
       left:0; top:0;
@@ -200,8 +201,8 @@
     }
     .segIcon svg{ width:34px; height:34px; display:block; }
 
-    /* ========== 圆弧文字核心样式 ========== */
-    .segTextArc{
+    /* text: smaller + narrower */
+    .segText{
       position:absolute;
       left:0; top:0;
       transform:
@@ -209,13 +210,27 @@
         rotate(calc(-1 * var(--a)))
         rotate(90deg);
       transform-origin: 0 0;
-      width:130px;
-      height:44px;
+      width:108px;
+      color:var(--txt);
+      font-weight:1000;
+      line-height:1.05;
+      text-align:center;
+      text-shadow: 0 2px 10px rgba(255,255,255,.55);
     }
-    .segTextArc svg{
-      width:100%;
-      height:100%;
-      overflow:visible;
+    .segText .l1{
+      font-size:12px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .segText .l2{
+      margin-top:3px;
+      font-size:10px;
+      font-weight:900;
+      opacity:.95;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
     /* center button */
@@ -365,6 +380,7 @@
         <div class="wheel" aria-hidden="true"></div>
 
         <div class="plate" id="plate" aria-label="抽奖转盘">
+          <!-- 8 slice backgrounds -->
           <div class="sliceBg" style="transform:rotate(0deg)"></div>
           <div class="sliceBg" style="transform:rotate(45deg)"></div>
           <div class="sliceBg" style="transform:rotate(90deg)"></div>
@@ -374,6 +390,7 @@
           <div class="sliceBg" style="transform:rotate(270deg)"></div>
           <div class="sliceBg" style="transform:rotate(315deg)"></div>
 
+          <!-- dividers -->
           <div class="divider" style="transform:translate(-50%,-100%) rotate(0deg)"></div>
           <div class="divider" style="transform:translate(-50%,-100%) rotate(45deg)"></div>
           <div class="divider" style="transform:translate(-50%,-100%) rotate(90deg)"></div>
@@ -383,7 +400,7 @@
           <div class="divider" style="transform:translate(-50%,-100%) rotate(270deg)"></div>
           <div class="divider" style="transform:translate(-50%,-100%) rotate(315deg)"></div>
 
-          <!-- 1 -->
+          <!-- segments: center angles = -90 + 22.5 + i*45 -->
           <div class="seg" style="--a:-67.5deg;">
             <div class="segIcon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
@@ -394,20 +411,12 @@
                 <path d="M32 31c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
               </svg>
             </div>
-            <div class="segTextArc">
-              <svg viewBox="0 0 130 50">
-                <defs>
-                  <path id="arcPath" d="M 20 42 A 58 58 0 0 1 110 42" fill="none"/>
-                </defs>
-                <text fill="#ff2f55" font-size="12" font-weight="bold" text-anchor="middle">
-                  <textPath href="#arcPath" startOffset="50%">1.5元无门槛券</textPath>
-                </text>
-                <text x="65" y="48" fill="#ff2f55" font-size="10" font-weight="bold" text-anchor="middle">立即可用</text>
-              </svg>
+            <div class="segText">
+              <div class="l1">1.5元无门槛券</div>
+              <div class="l2">立即可用</div>
             </div>
           </div>
 
-          <!-- 2 -->
           <div class="seg" style="--a:-22.5deg;">
             <div class="segIcon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
@@ -417,38 +426,22 @@
                 <path d="M32 27c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
               </svg>
             </div>
-            <div class="segTextArc">
-              <svg viewBox="0 0 130 50">
-                <defs>
-                  <path id="arcPath" d="M 20 42 A 58 58 0 0 1 110 42" fill="none"/>
-                </defs>
-                <text fill="#ff2f55" font-size="12" font-weight="bold" text-anchor="middle">
-                  <textPath href="#arcPath" startOffset="50%">99元补贴金</textPath>
-                </text>
-                <text x="65" y="48" fill="#ff2f55" font-size="10" font-weight="bold" text-anchor="middle">可直接领取</text>
-              </svg>
+            <div class="segText">
+              <div class="l1">99元补贴金</div>
+              <div class="l2">可直接领取</div>
             </div>
           </div>
 
-          <!-- 3 -->
           <div class="seg" style="--a:22.5deg;">
             <div class="segIcon">
               <img alt="水果" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%B0%B4%E6%9E%9C.webp">
             </div>
-            <div class="segTextArc">
-              <svg viewBox="0 0 130 50">
-                <defs>
-                  <path id="arcPath" d="M 20 42 A 58 58 0 0 1 110 42" fill="none"/>
-                </defs>
-                <text fill="#ff2f55" font-size="12" font-weight="bold" text-anchor="middle">
-                  <textPath href="#arcPath" startOffset="50%">1.99元抢购水果</textPath>
-                </text>
-                <text x="65" y="48" fill="#ff2f55" font-size="10" font-weight="bold" text-anchor="middle">价值66元</text>
-              </svg>
+            <div class="segText">
+              <div class="l1">1.99元抢购水果</div>
+              <div class="l2">价值66元</div>
             </div>
           </div>
 
-          <!-- 4 -->
           <div class="seg" style="--a:67.5deg;">
             <div class="segIcon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
@@ -458,38 +451,22 @@
                 <path d="M32 27c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
               </svg>
             </div>
-            <div class="segTextArc">
-              <svg viewBox="0 0 130 50">
-                <defs>
-                  <path id="arcPath" d="M 20 42 A 58 58 0 0 1 110 42" fill="none"/>
-                </defs>
-                <text fill="#ff2f55" font-size="12" font-weight="bold" text-anchor="middle">
-                  <textPath href="#arcPath" startOffset="50%">88元补贴金</textPath>
-                </text>
-                <text x="65" y="48" fill="#ff2f55" font-size="10" font-weight="bold" text-anchor="middle">可直接领取</text>
-              </svg>
+            <div class="segText">
+              <div class="l1">88元补贴金</div>
+              <div class="l2">可直接领取</div>
             </div>
           </div>
 
-          <!-- 5 -->
           <div class="seg" style="--a:112.5deg;">
             <div class="segIcon">
               <img alt="鸡蛋" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E9%B8%A1%E8%9B%8B.webp">
             </div>
-            <div class="segTextArc">
-              <svg viewBox="0 0 130 50">
-                <defs>
-                  <path id="arcPath" d="M 20 42 A 58 58 0 0 1 110 42" fill="none"/>
-                </defs>
-                <text fill="#ff2f55" font-size="12" font-weight="bold" text-anchor="middle">
-                  <textPath href="#arcPath" startOffset="50%">1.88元抢购鸡蛋</textPath>
-                </text>
-                <text x="65" y="48" fill="#ff2f55" font-size="10" font-weight="bold" text-anchor="middle">价值66元</text>
-              </svg>
+            <div class="segText">
+              <div class="l1">1.88元抢购鸡蛋</div>
+              <div class="l2">价值66元</div>
             </div>
           </div>
 
-          <!-- 6 -->
           <div class="seg" style="--a:157.5deg;">
             <div class="segIcon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
@@ -500,20 +477,12 @@
                 <path d="M32 31c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
               </svg>
             </div>
-            <div class="segTextArc">
-              <svg viewBox="0 0 130 50">
-                <defs>
-                  <path id="arcPath" d="M 20 42 A 58 58 0 0 1 110 42" fill="none"/>
-                </defs>
-                <text fill="#ff2f55" font-size="12" font-weight="bold" text-anchor="middle">
-                  <textPath href="#arcPath" startOffset="50%">10元无门槛券</textPath>
-                </text>
-                <text x="65" y="48" fill="#ff2f55" font-size="10" font-weight="bold" text-anchor="middle">立即可用</text>
-              </svg>
+            <div class="segText">
+              <div class="l1">10元无门槛券</div>
+              <div class="l2">立即可用</div>
             </div>
           </div>
 
-          <!-- 7 -->
           <div class="seg" style="--a:202.5deg;">
             <div class="segIcon" aria-hidden="true">
               <svg viewBox="0 0 64 64" fill="none">
@@ -523,34 +492,19 @@
                 <path d="M32 27c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z" fill="#ff3b5c"/>
               </svg>
             </div>
-            <div class="segTextArc">
-              <svg viewBox="0 0 130 50">
-                <defs>
-                  <path id="arcPath" d="M 20 42 A 58 58 0 0 1 110 42" fill="none"/>
-                </defs>
-                <text fill="#ff2f55" font-size="12" font-weight="bold" text-anchor="middle">
-                  <textPath href="#arcPath" startOffset="50%">66元补贴金</textPath>
-                </text>
-                <text x="65" y="48" fill="#ff2f55" font-size="10" font-weight="bold" text-anchor="middle">可直接领取</text>
-              </svg>
+            <div class="segText">
+              <div class="l1">66元补贴金</div>
+              <div class="l2">可直接领取</div>
             </div>
           </div>
 
-          <!-- 8 -->
           <div class="seg" style="--a:247.5deg;">
             <div class="segIcon">
               <img alt="抽纸" src="https://raw.githubusercontent.com/Cwt123456789/subsidy-demo/main/%E6%8A%BD%E7%BA%B8.webp">
             </div>
-            <div class="segTextArc">
-              <svg viewBox="0 0 130 50">
-                <defs>
-                  <path id="arcPath" d="M 20 42 A 58 58 0 0 1 110 42" fill="none"/>
-                </defs>
-                <text fill="#ff2f55" font-size="12" font-weight="bold" text-anchor="middle">
-                  <textPath href="#arcPath" startOffset="50%">1.99元抢购抽纸</textPath>
-                </text>
-                <text x="65" y="48" fill="#ff2f55" font-size="10" font-weight="bold" text-anchor="middle">价值66元</text>
-              </svg>
+            <div class="segText">
+              <div class="l1">1.99元抢购抽纸</div>
+              <div class="l2">价值66元</div>
             </div>
           </div>
         </div>
@@ -637,11 +591,13 @@
     { label:'1.99元抢购抽纸（价值66元）', amount: 1.99 },
   ];
 
+  // radii tuned smaller so icon/text stay inside each slice
   function setRadii(){
     const rect = wheelWrap.getBoundingClientRect();
     const size = Math.min(rect.width, rect.height);
     if (!size || size < 50) return false;
 
+    // smaller than previous: keep away from dividers and other slices
     const rIcon = Math.round(size * 0.235);
     const rText = Math.round(size * 0.365);
 
@@ -650,6 +606,7 @@
     return true;
   }
 
+  // rAF retry for first paint
   (function ensureLayout(){
     let tries = 0;
     const tick = () => {
@@ -686,7 +643,7 @@
     if (spinning) return;
     spinning = true;
 
-    const idx = 1;
+    const idx = 1; // fixed win
     // const idx = Math.floor(Math.random() * prizes.length);
 
     spinTo(idx);
